@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des Abonnés</h1>
+    <table class="table table-striped mt-4">
+    {% for type, messages in app.flashes %}
+        <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Numéro (MSISDN)</th>
+                <th>Ville</th>
+                <th>Spécialité</th>
+                <th>Date d'Inscription</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for abonne in abonnes %}
+                <tr>
+                    <td>{{ abonne.id }}</td>
+                    <td>{{ abonne.msisdn }}</td>
+                    <td>{{ abonne.Ville }}</td>
+                    <td>{{ abonne.specialite }}</td>
+                    <td>{{ abonne.createAt|date('d-m-Y H:i') }}</td>
+                    <td>
+                        <a href="{{ path('Abonne_delete', {id: abonne.id}) }}" 
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Voulez-vous vraiment supprimer cet abonné ?')">
+                            Supprimer
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">Aucun abonné trouvé.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('abonne_new') }}" class="btn btn-primary mt-3">Ajouter un Abonné</a>
+{% endblock %}

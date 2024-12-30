@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello OffresController!{% endblock %}
+
+{% block body %}
+
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+
+    {% for type, messages in app.flashes %}
+        <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    {% for item in offres %}
+    
+        <p>Titre :{{item.titre}}</p>
+        </br>
+        <p>Secteur : {{item.secteur}}</p>
+        </br>
+        <p>Description: {{item.description}}</p>
+        </br>
+        <p>Lieu: {{item.lieu}}</p>
+        </br>
+        <p>Slug: {{ item.slug }}</p>
+        <p>Date: {{ item.dateMiseEnLigneAt|date('d-m-Y H:i') }}</p>
+        <p>Statut Offre: 
+            {% if item.statutOffre == 0 %}
+                <span class="badge bg-success">Active</span>
+            {% else %}
+                <span class="badge bg-danger">Inactive</span>
+            {% endif %}
+        </p>
+        </br>
+        <p>Type contrat: {{item.typeContrat}}</p>
+        </br>
+        <p>Id: {{item.id}}</p>
+        </br>
+        <p>Entreprise: {{item.entreprise.libele}}</p>
+        
+        
+    {% endfor %}
+
+<div class="example-wrapper">
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code>/home/ghost/Documents/Documents/Projet/TiteMondo/emploiecg/src/Controller/OffresController.php</code></li>
+        <li>Your template at <code>/home/ghost/Documents/Documents/Projet/TiteMondo/emploiecg/templates/offres/index.html.twig</code></li>
+    </ul>
+</div>
+{% endblock %}

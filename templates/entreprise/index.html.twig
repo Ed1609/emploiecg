@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des entreprises{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Liste des entreprises</h1>
+        {% for type, messages in app.flashes %}
+            <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Libellé</th>
+                    <th>Secteur</th>
+                    <th>Description</th>
+                    <th>Situation Géographique</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entreprise in entreprises %}
+                    <tr>
+                        <td>{{ entreprise.id }}</td>
+                        <td>{{ entreprise.libele }}</td>
+                        <td>{{ entreprise.secteur }}</td>
+                        <td>{{ entreprise.Description }}</td>
+                        <td>{{ entreprise.situationGeographique }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Aucune entreprise trouvée.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

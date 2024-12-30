@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+{% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/custom-bs.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/jquery.fancybox.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/bootstrap-select.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('fonts/icomoon/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('fonts/line-icons/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/animate.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/quill.snow.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="site-wrap">
+
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div> <!-- .site-mobile-menu -->
+
+    <!-- HOME -->
+    <section class="section-hero overlay inner-page bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7">
+            <h1 class="text-white font-weight-bold">S'identifier'</h1>
+            <div class="custom-breadcrumbs">
+              <a href="{{path('app_home')}}">Accueil</a> <span class="mx-2 slash">/</span>
+              <span class="text-white"><strong>S'identifier</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+            <h2 class="mb-4">S'identifier</h2>
+            <form action="{{path('app_connexion')}}" id="loginform" class="p-4 border rounded" method="post">
+              {% for type, messages in app.flashes %}
+                  <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
+                      {% for message in messages %}
+                          {{ message }}
+                      {% endfor %}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+              {% endfor %}
+              {% if app.user %}
+                <div class="mb-3">
+                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                </div>
+              {% endif %}
+              <div class="row form-group">
+                <div class="col-md-12 mb-3 mb-md-0">
+                  <label class="text-black" for="fname">Email</label>
+                  <input type="msisdn" name="msisdn" id="msisdn" class="form-control" placeholder="2420550..." autocomplete="msisdn" required autofocus>
+                </div>
+              </div>
+              <div class="form-group" hidden = true>
+                <input type="hidden" name="password" id="password" class="form-control" value="K.RMASeHDyZm5tp" required>
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+              <div class="row form-group">
+                <div class="col-md-12">
+                  <button type="submit" class="btn px-4 btn-primary text-white">
+                    S'identifier
+                  </button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/login-validation.js') }}"></script>
+    <script src="{{'js/bootstrap-select.min.js'}}"></script>
+    <script src="{{asset('js/quill.min.js')}}"></script>
+    <script src="{{asset('js/custom.js')}}"></script>
+{% endblock %}

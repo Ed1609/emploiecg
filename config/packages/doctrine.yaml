@@ -1,0 +1,70 @@
+doctrine:
+    dbal:
+        default_connection: default
+        connections:
+            default:
+                url: '%env(resolve:DATABASE_URL)%'
+                profiling_collect_backtrace: '%kernel.debug%'
+                use_savepoints: true
+
+            secondary:
+                driver: 'pdo_mysql'
+                host: '%env(SECOND_DATABASE_HOST)%'
+                port: '%env(SECOND_DATABASE_PORT)%'
+                user: '%env(SECOND_DATABASE_USER)%'
+                password: '%env(SECOND_DATABASE_PASSWORD)%'
+                dbname: '%env(SECOND_DATABASE_NAME)%'
+                charset: utf8mb4
+
+    orm:
+        default_entity_manager: default
+        entity_managers:
+            default:
+                connection: default
+                auto_mapping: true
+                report_fields_where_declared: true
+                validate_xml_mapping: true
+                naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+                identity_generation_preferences:
+                    Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
+                mappings:
+                    App:
+                        type: attribute
+                        is_bundle: false
+                        dir: '%kernel.project_dir%/src/Entity'
+                        prefix: 'App\Entity'
+                        alias: App
+
+            secondary:
+                connection: secondary
+                mappings:
+                    Secondary:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/src/SecondaryEntity'
+                        prefix: 'App\SecondaryEntity'
+                        alias: Secondary
+
+when@test:
+    doctrine:
+        dbal:
+            dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+
+when@prod:
+    doctrine:
+        orm:
+            proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
+            query_cache_driver:
+                type: pool
+                pool: doctrine.system_cache_pool
+            result_cache_driver:
+                type: pool
+                pool: doctrine.result_cache_pool
+
+    framework:
+        cache:
+            pools:
+                doctrine.result_cache_pool:
+                    adapter: cache.app
+                doctrine.system_cache_pool:
+                    adapter: cache.system
