@@ -125,28 +125,28 @@
             <div class="d-flex align-items-center justify-content-center mb-2">
               <strong class="number" data-number="1930">0</strong>
             </div>
-            <span class="caption">Candidates</span>
+            <span class="caption">Abonnements</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
               <strong class="number" data-number="54">0</strong>
             </div>
-            <span class="caption">Jobs Posted</span>
+            <span class="caption">Offres postulés</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
               <strong class="number" data-number="120">0</strong>
             </div>
-            <span class="caption">Jobs Filled</span>
+            <span class="caption">Emplois pourvus</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
               <strong class="number" data-number="550">0</strong>
             </div>
-            <span class="caption">Companies</span>
+            <span class="caption">Entreprises</span>
           </div>            
         </div>
       </div>
@@ -160,37 +160,62 @@
             <h2 class="section-title mb-2">{{ total }} Offres d'emploi disponible</h2>
           </div>
         </div>
-        
-        <ul class="job-listings mb-5">
-          {% for item in home_offre %}
-          <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-            <a href="{{ path('app_offres', {'slug':item.slug,'id': item.id}) }}"></a>
-            <div class="job-listing-logo">
-              <img src="{{ asset('uploads/images/' ~ item.entreprise.logo) }}" alt="{{ asset('uploads/images/' ~ item.entreprise.libele) }}" class="img-fluid">
-            </div>
+        {% if not statut %}
+                  <ul class="job-listings mb-5">
+                  {% for item in home_offre %}
+                  <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
+                    <a href="{{ path('app_home') }}" onclick="alert('⚠️ Identifiez-vous pour accéder à cette offre.'); return false;">
+                    <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
+                      <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
+                        <h2>{{item.titre}}</h2>
+                      </div>
+                      <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
+                        <span class="icon-room"></span> {{item.lieu}}
+                      </div>
+                      <div class="job-listing-meta">
+                      {% if item.tempsTaff == 'Full Time' %}
+                        <span class="badge badge-success">Plein Temps</span>
+                        {% else %}
+                        <span class="badge badge-danger">Mi-Temps</span>
+                      {% endif %}
+                      </div>
+                    </div>
+                  </li>
+                  {% else %}
+                    <h2 class="text-center">Aucune offre trouvée.</h2>
+                  {% endfor %} 
+                </ul>
 
-            <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
-              <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
-                <h2>{{item.titre}}</h2>
-                <strong>{{item.entreprise.libele}}</strong>
-              </div>
-              <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                <span class="icon-room"></span> {{item.lieu}}
-              </div>
-              <div class="job-listing-meta">
-              {% if item.tempsTaff == 'Full Time' %}
-                <span class="badge badge-success">Plein Temps</span>
                 {% else %}
-                <span class="badge badge-danger">Mi-Temps</span>
-              {% endif %}
-              </div>
-            </div>
-          </li>
-          {% else %}
-            <h2 class="text-center">Aucune offre trouvée.</h2>
-          {% endfor %}
-          
-        </ul>
+                                  <ul class="job-listings mb-5">
+                  {% for item in home_offre %}
+                  <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
+                    <a href="{{ path('app_offres', {'slug':item.slug,'id': item.id}) }}"></a>
+                    <div class="job-listing-logo">
+                      <img src="{{ asset('uploads/images/' ~ item.entreprise.logo) }}" alt="{{ asset('uploads/images/' ~ item.entreprise.libele) }}" class="img-fluid">
+                    </div>
+                    <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
+                      <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
+                        <h2>{{item.titre}}</h2>
+                        <strong>{{item.entreprise.libele}}</strong>
+                      </div>
+                      <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
+                        <span class="icon-room"></span> {{item.lieu}}
+                      </div>
+                      <div class="job-listing-meta">
+                      {% if item.tempsTaff == 'Full Time' %}
+                        <span class="badge badge-success">Plein Temps</span>
+                        {% else %}
+                        <span class="badge badge-danger">Mi-Temps</span>
+                      {% endif %}
+                      </div>
+                    </div>
+                  </li>
+                  {% else %}
+                    <h2 class="text-center">Aucune offre trouvée.</h2>
+                  {% endfor %} 
+                </ul>
+        {% endif %}
 
         <div class="row pagination-wrap">
           <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
@@ -221,6 +246,8 @@
       </div>
     </section>
 
+{% if not statut %}
+
     <section class="py-5 bg-image overlay-primary fixed overlay" style="background-image: url('images/hero_1.jpg');">
       <div class="container">
         <div class="row align-items-center">
@@ -234,6 +261,8 @@
         </div>
       </div>
     </section>
+
+  {% endif %}
 
     
     <section class="site-section py-4">

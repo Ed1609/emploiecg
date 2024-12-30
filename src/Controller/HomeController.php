@@ -21,9 +21,12 @@ class HomeController extends AbstractController
         // Nombre d'offres par page (par défaut : 10)
         $session = $requestStack->getSession();
         $Abonne = $session->get('Abonne');
+        $connected = false;
+
         if($Abonne)
         {
-            dd($Abonne);
+            $connected = true;
+           // dd($Abonne);
         }
         $produitsParPage = $request->query->getInt('offresParPage', 10);
         $pageActuelle = max($request->query->getInt('page', 1), 1);
@@ -49,6 +52,7 @@ class HomeController extends AbstractController
             'total' => $total,
             'publicite'=>$publicityRepository->findAll(),
             'premiereEntree' => $premiereEntree,
+            'statut'=>$connected,
         ]);
     }
     

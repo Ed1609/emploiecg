@@ -25,7 +25,8 @@
     </head>
     
     <body id="top">
-        {% include '_navbar.html.twig' %}
+
+        {{ render(controller('App\\Controller\\NavbarController::index')) }}
         
         {# Contenu principal #}
         {% block body %}{% endblock %}
