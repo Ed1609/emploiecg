@@ -161,33 +161,7 @@
           </div>
         </div>
         {% if not statut %}
-                  <ul class="job-listings mb-5">
-                  {% for item in home_offre %}
-                  <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-                    <a href="{{ path('app_home') }}" onclick="alert('⚠️ Identifiez-vous pour accéder à cette offre.'); return false;">
-                    <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
-                      <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
-                        <h2>{{item.titre}}</h2>
-                      </div>
-                      <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                        <span class="icon-room"></span> {{item.lieu}}
-                      </div>
-                      <div class="job-listing-meta">
-                      {% if item.tempsTaff == 'Full Time' %}
-                        <span class="badge badge-success">Plein Temps</span>
-                        {% else %}
-                        <span class="badge badge-danger">Mi-Temps</span>
-                      {% endif %}
-                      </div>
-                    </div>
-                  </li>
-                  {% else %}
-                    <h2 class="text-center">Aucune offre trouvée.</h2>
-                  {% endfor %} 
-                </ul>
-
-                {% else %}
-                                  <ul class="job-listings mb-5">
+                <ul class="job-listings mb-5">
                   {% for item in home_offre %}
                   <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
                     <a href="{{ path('app_offres', {'slug':item.slug,'id': item.id}) }}"></a>
@@ -215,7 +189,36 @@
                     <h2 class="text-center">Aucune offre trouvée.</h2>
                   {% endfor %} 
                 </ul>
-        {% endif %}
+        {% else %}
+                <ul class="job-listings mb-5">
+                  {% for item in home_offre %}
+                  <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
+                    <a href="{{ path('app_offres', {'slug':item.slug,'id': item.id}) }}"></a>
+                    <div class="job-listing-logo">
+                      <img src="{{ asset('uploads/images/' ~ item.entreprise.logo) }}" alt="{{ asset('uploads/images/' ~ item.entreprise.libele) }}" class="img-fluid">
+                    </div>
+                    <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
+                      <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
+                        <h2>{{item.titre}}</h2>
+                        <strong>{{item.entreprise.libele}}</strong>
+                      </div>
+                      <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
+                        <span class="icon-room"></span> {{item.lieu}}
+                      </div>
+                      <div class="job-listing-meta">
+                      {% if item.tempsTaff == 'Full Time' %}
+                        <span class="badge badge-success">Plein Temps</span>
+                        {% else %}
+                        <span class="badge badge-danger">Mi-Temps</span>
+                      {% endif %}
+                      </div>
+                    </div>
+                  </li>
+                  {% else %}
+                    <h2 class="text-center">Aucune offre trouvée.</h2>
+                  {% endfor %} 
+                </ul>
+      {% endif %}
 
         <div class="row pagination-wrap">
           <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">

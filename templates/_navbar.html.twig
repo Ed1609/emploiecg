@@ -12,15 +12,23 @@
                 <li>
                     <a href="{{ path('app_about') }}" class="nav-link {% if app.request.get('_route') == 'app_about' %}active{% endif %}">À propos de nous</a>
                 </li>
+                {% if statut %}
                 <li>
                     <a href="{{ path('abo-voir.offre') }}" class="nav-link {% if app.request.get('_route') == 'abo-voir.offre' %}active{% endif %}">Toutes les offres</a>
                 </li>
+                {% endif %}
                 <li>
                     <a href="{{ path('app_contact') }}" class="nav-link {% if app.request.get('_route') == 'app_contact' %}active{% endif %}">Contact</a>
                 </li>
+                {% if not statut %}
                 <li class="d-lg-none">
                     <a href="{{ path('connexion.abonne') }}" class="nav-link {% if app.request.get('_route') == 'connexion.abonne' %}active{% endif %}">S'identifier</a>
                 </li>
+                {% else %}
+                <li class="d-lg-none">
+                    <a href="{{ path('app_logout') }}" class="nav-link {% if app.request.get('_route') == 'app_logout' %}active{% endif %}">S'identifier</a>
+                </li>
+                {% endif %}
             </ul>
           </nav>
           <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
