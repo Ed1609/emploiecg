@@ -16,19 +16,11 @@ class SmsController extends AbstractController
         $this->smsService = $smsService;
     }
 
-    #[Route('/send-sms', name: 'send_sms')]
-    public function sendSms(/*string $recipientNumber, string $recipientName, string $message*/): JsonResponse
+    public function sendSms(string $recipientNumber, string $recipientName, string $message)
     {
-        $recipientNumber = '+242069226707';
-        $recipientName = 'Ghost';
-        $message = 'Bienvenu sur la plateforme de test';
 
         $success = $this->smsService->sendSms($recipientNumber, $recipientName, $message); // Correct method call
 
-        if ($success) {
-            return new JsonResponse(['message' => 'SMS sent successfully']);
-        } else {
-            return new JsonResponse(['error' => 'Failed to send SMS'], 500); // Internal Server Error
-        }
+        return $this->$success;
     }
 }

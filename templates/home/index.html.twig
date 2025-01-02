@@ -45,6 +45,7 @@
               <h1 class="text-white font-weight-bold">Le moyen le plus simple pour obtenir l'emploi de vos rêves</h1>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate est, consequuntur perferendis.</p>
             </div>
+            {% if not statut %}
             <form id ="form-inscription" action ="{{ path('abonne_new') }}" method="post" class="search-jobs-form">
               {% for type, messages in app.flashes %}
                   <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
@@ -100,6 +101,18 @@
                 </div>
               </div>
             </form>
+            {% else %}
+              <div class="row mt-4">
+                <div class="col-12 d-flex flex-column flex-md-row justify-content-center align-items-center gap-3">
+                  <a href="{{ path('abo-voir.offre') }}" class="btn btn-primary btn-lg me-md-3 mb-2 mb-md-0" id="btn1">
+                    Découvrir toutes les offres
+                  </a>
+                  <a href="button" class="btn btn-secondary btn-lg" id="btn2">
+                    Accéder à la bibliothèque des modèles de CV
+                  </a>
+                </div>
+              </div>
+          {% endif %}
 
           </div>
         </div>
@@ -166,7 +179,7 @@
                   <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
                     <a href="{{ path('app_offres', {'slug':item.slug,'id': item.id}) }}"></a>
                     <div class="job-listing-logo">
-                      <img src="{{ asset('uploads/images/' ~ item.entreprise.logo) }}" alt="{{ asset('uploads/images/' ~ item.entreprise.libele) }}" class="img-fluid">
+                      <img src="{{ asset(item.entreprise.logo is not empty ? 'uploads/images/' ~ item.entreprise.logo : 'uploads/images/default-logo.png') }}" alt="{{item.entreprise.libele}}" class="img-fluid">
                     </div>
                     <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
                       <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">

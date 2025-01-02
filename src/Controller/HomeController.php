@@ -22,10 +22,12 @@ class HomeController extends AbstractController
         $session = $requestStack->getSession();
         $Abonne = $session->get('Abonne');
         $connected = false;
+        $idUser = '';
 
         if($Abonne)
         {
             $connected = true;
+            $idUser = $Abonne['idAbonne'];
            // dd($Abonne);
         }
         $produitsParPage = $request->query->getInt('offresParPage', 10);
@@ -53,6 +55,7 @@ class HomeController extends AbstractController
             'publicite'=>$publicityRepository->findAll(),
             'premiereEntree' => $premiereEntree,
             'statut'=>$connected,
+            'idAbonne'=>$idUser,
         ]);
     }
     

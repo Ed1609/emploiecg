@@ -12,6 +12,9 @@ use App\Repository\AbonneRepository;
 use App\Entity\Blacklist;
 use App\Repository\BlacklistRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Controller\ConnexionController;
+use App\Service\BlacklistService;
+use App\Service\SmsService;
 
 
 
@@ -27,8 +30,10 @@ class AbonneController extends AbstractController
     }
 
     #[Route('/abonne/new', name: 'abonne_new')]
-    public function new(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
+    public function new(Request $request,BlacklistService $blacklistService,SmsService $smsService ,UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
     {
+        $cout = 250;
+
         if ($request->isMethod('POST')) {
             $msisdn = $request->request->get('msisdn');
     
@@ -53,6 +58,14 @@ class AbonneController extends AbstractController
             $em->persist($abonne);
             $em->flush();
     
+            // 📲 Envoi de SMS de bienvenue
+            $message = "Bienvenue sur notre plateforme d'alerte emploi, le coût de souscription est de {$cout} Frs.";
+            
+            $smsService->sendSms($msisdn, '', $message);
+            
+            //$success= $this->$sms->sendSms($msisdn,'',$message); // Correct method call
+            $smsService->sendSms($msisdn,'',$message);
+
             if($abonne->getRoles()==['ROLE_ADMIN'])
             {
                 $this->addFlash('success', 'Abonné ajouté avec succès.');
@@ -137,7 +150,7 @@ class AbonneController extends AbstractController
 
 
     #[Route('abonne/{id}/delete', name: 'Abonne_delete')]
-    public function deleteuser(int $id,AbonneRepository $abonneRepository,BlacklistRepository $blacklistRepository,EntityManagerInterface $em): Response 
+    public function deleteuser(int $id,AbonneRepository $abonneRepository,BlacklistRepository $blacklistRepository,EntityManagerInterface $em) 
     {
         $abonne = $abonneRepository->find($id);
 
@@ -158,9 +171,9 @@ class AbonneController extends AbstractController
         // Supprimer de la table Abonne
         $em->remove($abonne);
         $em->flush();
-
+        
         $this->addFlash('success', 'Compte supprimé.');
+        return $this->redirectToRoute('connexion.abonne');
 
-        return $this->redirectToRoute('abonne_list');
     }
 }

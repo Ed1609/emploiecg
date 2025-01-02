@@ -331,6 +331,7 @@ h1, h2, h3, h4 {
 }
 .logo-6 {
 	max-width: 150px;
+	
 	@include media-breakpoint-down(sm) {
 		max-width: 150px;
 	}
@@ -347,6 +348,7 @@ h1, h2, h3, h4 {
 		max-width: 90px;
 	}
 }
+
 
 .testimony-full {
 	blockquote {

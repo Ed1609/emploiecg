@@ -155,27 +155,41 @@ class OffresController extends AbstractController
     public function Affichage(OffreRepository $offreRepository, RequestStack $requestStack,PublicityRepository $publicityRepository, EntrepriseRepository $entrepriseRepository, Request $request): Response
     {
         $session = $requestStack->getSession();
-        $produitsParPage = $request->query->getInt('offresParPage', 10);
-        $pageActuelle = max($request->query->getInt('page', 1), 1);
+        $Abonne = $session->get('Abonne');
 
-        $total = $offreRepository->countAllProducts();
-        $nombreDePages = ceil($total / $produitsParPage);
 
-        $pageActuelle = min($pageActuelle, $nombreDePages);
-        $premiereEntree = ($pageActuelle - 1) * $produitsParPage;
+        if($Abonne)
+        {
+            $idUser = $Abonne['idAbonne'];
+            $statut = true;
+  
+            $produitsParPage = $request->query->getInt('offresParPage', 10);
+            $pageActuelle = max($request->query->getInt('page', 1), 1);
 
-        $offres = $offreRepository->afficherOffres($produitsParPage, $premiereEntree);
+            $total = $offreRepository->countAllProducts();
+            $nombreDePages = ceil($total / $produitsParPage);
 
-        return $this->render('offres/voir_abonne.html.twig', [
-            'home_offre' => $offres,
-            'nombreDePages' => $nombreDePages,
-            'pageActuelle' => $pageActuelle,
-            'produitsParPage' => $produitsParPage,
-            'entreprise' => $entrepriseRepository->afficherEntrepriseAdmin(),
-            'total' => $total,
-            'publicite' => $publicityRepository->findAll(),
-            'premiereEntree' => $premiereEntree,
-        ]);
+            $pageActuelle = min($pageActuelle, $nombreDePages);
+            $premiereEntree = ($pageActuelle - 1) * $produitsParPage;
+
+            $offres = $offreRepository->afficherOffres($produitsParPage, $premiereEntree);
+
+            return $this->render('offres/voir_abonne.html.twig', [
+                'home_offre' => $offres,
+                'nombreDePages' => $nombreDePages,
+                'pageActuelle' => $pageActuelle,
+                'produitsParPage' => $produitsParPage,
+                'entreprise' => $entrepriseRepository->afficherEntrepriseAdmin(),
+                'total' => $total,
+                'publicite' => $publicityRepository->findAll(),
+                'premiereEntree' => $premiereEntree,
+                'idAbonne'=>$idUser,
+                'statut'=>$statut,
+            ]);
+        }else
+        {
+            return $this->render('offres/error404.html.twig');
+        }
     }
     
 
