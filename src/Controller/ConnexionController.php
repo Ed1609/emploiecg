@@ -98,7 +98,7 @@ class ConnexionController extends AbstractController
                     $sessionData['email'] = $servicelient['email'];
                     $sessionData['secteur_activite'] = $servicelient['secteur_activite'];
                     $sessionData['situationGeographique'] = $servicelient['situationGeographique'];
-                    $redirectTo = $this->redirectToRoute('app_homeAdmin');
+                    $redirectTo = $this->redirectToRoute('app_admin');
                     $cookieDuration = 3600;
                 } else {
 #                    $this->addFlash('success', 'Vous êtes connecté.');

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Description de votre site ici">
+        <meta name="keywords" content="mots-clés, pour, le, référencement">
+        <meta name="author" content="elembo-tech.com">
+        
+        <title>{% block title %}Bienvenue !{% endblock %}</title>
+        
+        <link rel="icon" href="{{ asset('img/kaiadmin/favicon.ico') }}" type="image/x-icon"/>
+        
+        <!-- Fonts and icons -->
+        <script src="{{ asset('js/plugin/webfont/webfont.min.js') }}"></script>
+        <script>
+          WebFont.load({
+            google: { families: ["Public Sans:300,400,500,600,700"] },
+            custom: {
+              families: [
+                "Font Awesome 5 Solid",
+                "Font Awesome 5 Regular",
+                "Font Awesome 5 Brands",
+                "simple-line-icons",
+              ],
+              urls: ["{{ asset('css/fonts.min.css') }}"],
+            },
+            active: function () {
+              sessionStorage.fonts = true;
+            },
+          });
+        </script>
+
+        <!-- CSS Files -->
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/plugins.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/kaiadmin.min.css') }}" />
+        <!-- CSS Just for demo purpose, don't include it in your project -->
+        <link rel="stylesheet" href="{{ asset('css/demo.css') }}" />
+        
+        {% block stylesheets %}{% endblock %}
+    </head>
+    
+    <body>
+        <div class="wrapper">
+          {% include 'navbar/index.html.twig' %}
+          
+          {# Contenu principal #}
+          {% block body %}{% endblock %}
+          
+          {# Inclusion du pied de page #}
+          {% include 'navbar/footer.html.twig' %}
+          
+          {# Scripts principaux #}
+          {% block javascripts %}
+          <!-- Core Scripts -->
+          <script src="{{ asset('js/core/jquery-3.7.1.min.js') }}" defer></script>
+          <script src="{{ asset('js/core/popper.min.js') }}" defer></script>
+          <script src="{{ asset('js/core/bootstrap.min.js') }}" defer></script>
+          <!-- Plugins -->
+          <script src="{{ asset('js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}" defer></script>
+          <script src="{{ asset('js/plugin/chart.js/chart.min.js') }}" defer></script>
+          <script src="{{ asset('js/plugin/jquery.sparkline/jquery.sparkline.min.js') }}" defer></script>
+          <script src="{{ asset('js/plugin/chart-circle/circles.min.js') }}" defer></script>
+          <script src="{{ asset('js/plugin/datatables/datatables.min.js') }}" defer></script>
+          <script src="{{ asset('js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}" defer></script>
+          <script src="{{ asset('js/plugin/jsvectormap/jsvectormap.min.js') }}" defer></script>
+          <script src="{{ asset('js/plugin/jsvectormap/world.js') }}" defer></script>
+          <script src="{{ asset('js/plugin/sweetalert/sweetalert.min.js') }}" defer></script>
+          <!-- Main JS -->
+          <script src="{{ asset('js/kaiadmin.min.js') }}" defer></script>
+          <!-- Demo Scripts (à supprimer en production) -->
+          <script src="{{ asset('js/setting-demo.js') }}" defer></script>
+          <script src="{{ asset('js/demo.js') }}" defer></script>
+          {% endblock %}
+        </div>
+    </body>
+</html>
