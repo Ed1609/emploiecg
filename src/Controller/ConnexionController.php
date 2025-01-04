@@ -83,25 +83,33 @@ class ConnexionController extends AbstractController
                 $manager->flush();
 
                 $servicelient = $serviceSecondaryDataBase->getDataFromSecondaryDb();
-                $adminRole = 'Roles_ADMIN';
-                $identifiant = $servicelient['identifiant'] ?? null;
-
+                $adminRole = "ROLE_ADMIN";
+                $identifiant ="242057080285"; //$servicelient['identifiant'] ?? null;
+                $d = $user->getRoles();
+                
+                //dd($admin);
                 $sessionData = [
                     'idAbonne' => $user->getId(),
                     'msisdn' => $user->getmsisdn(),
-                    'Roles' => $user->getRoles(),
+                    'Roles' => $d[0],
                 ];
 
-                if (in_array($adminRole, $user->getRoles()) && $user->getMsisdn() === $identifiant) {
-                    $sessionData['identifiant'] = $servicelient['identifiant'];
+                /*if($adminRole===$d[0])
+                {
+                    dd($sessionData);
+                }*/
+
+                if ($adminRole === $d[0] && $user->getMsisdn() === $identifiant) {
+                                       
+                    /*$sessionData['identifiant'] = $servicelient['identifiant'];
                     $sessionData['client'] = $servicelient['client'];
                     $sessionData['email'] = $servicelient['email'];
                     $sessionData['secteur_activite'] = $servicelient['secteur_activite'];
-                    $sessionData['situationGeographique'] = $servicelient['situationGeographique'];
+                    $sessionData['situationGeographique'] = $servicelient['situationGeographique'];*/
                     $redirectTo = $this->redirectToRoute('app_admin');
                     $cookieDuration = 3600;
                 } else {
-#                    $this->addFlash('success', 'Vous êtes connecté.');
+#                   $this->addFlash('success', 'Vous êtes connecté.');
                     $redirectTo = $this->redirectToRoute('app_home');
                     $cookieDuration = 604800;
                 }

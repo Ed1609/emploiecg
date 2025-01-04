@@ -25,7 +25,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/abonne/list', name: 'abonne_list')]
+    #[Route('/abonne/liùst', name: 'abonne_list')]
     public function AjouterAbonne(AbonneRepository $abonneRepository): Response
     {
         $abonnes = $abonneRepository->findAll();

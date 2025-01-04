@@ -17,13 +17,18 @@ class NavbarController extends AbstractController
         $Abonne = $session->get('Abonne');
         $connected = false;
 
+        $idUser = '';
+
         if($Abonne)
         {
             $connected = true;
+            $idUser = $Abonne['idAbonne'];
            // dd($Abonne);
         }
         return $this->render('_navbar.html.twig', [
             'statut'=>$connected,
+            'idAbonne'=>$idUser,
+
         ]);
     }
 }

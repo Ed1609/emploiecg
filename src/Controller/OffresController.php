@@ -22,9 +22,20 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class OffresController extends AbstractController
 {
     #[Route('/offres/{slug}-{id}', name: 'app_offres', requirements: ['id' => '\d+', 'slug' => '[a-zA-Z0-9/-]+'])]
-    public function index(OffreRepository $offreRepository, EntrepriseRepository $entrepriseRepository, Request $request, int $id, string $slug, SessionInterface $session): Response 
+    public function index(OffreRepository $offreRepository,RequestStack $requestStack, EntrepriseRepository $entrepriseRepository, Request $request, int $id, string $slug, SessionInterface $session): Response 
     {
         $job = $offreRepository->find($id);
+        $session = $requestStack->getSession();
+        $Abonne = $session->get('Abonne');
+        $connected = false;
+        $idUser = '';
+
+        if($Abonne)
+        {
+            $connected = true;
+            $idUser = $Abonne['idAbonne'];
+           // dd($Abonne);
+        }
 
         if (!$job) {
             throw $this->createNotFoundException('Offre pas disponible.');
@@ -34,6 +45,8 @@ class OffresController extends AbstractController
             return $this->redirectToRoute('app_offres', [
                 'id' => $job->getId(),
                 'slug' => $job->getSlug(),
+                'statut'=>$connected,
+                'idAbonne'=>$idUser,
             ], 301);
         }
 
@@ -44,6 +57,8 @@ class OffresController extends AbstractController
             'entreprise' => $entreprise,
         ]);
     }
+
+
 
     #[Route('/formOffre', name: 'creer-offre')]
     public function redirection(EntrepriseRepository $entrepriseRepository): Response
@@ -136,7 +151,7 @@ class OffresController extends AbstractController
             return $this->redirectToRoute('voir.offre');
         }
 
-        return $this->render('formulaire/new_offers.html.twig', [
+        return $this->redirectToRoute('creer-offre', [
             'entreprises' => $entityManager->getRepository(Entreprise::class)->findAll()
         ]);
     }
