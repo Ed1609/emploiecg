@@ -1,0 +1,2 @@
+#!/bin/sh
+rsync -av ./ xdcyntmz@monajob.com:~/monajob.com --include=public/buid --include=vendor --exclude-from=.gitignore --exclude=".*"
