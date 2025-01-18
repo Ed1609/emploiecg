@@ -49,6 +49,9 @@ class Abonne implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $lockedUntil = null;
 
+    #[ORM\Column(length: 25)]
+    private ?string $modePaiement = null;
+
     public function __construct()
     {
         $this->roles = ['ROLE_USER'];
@@ -168,6 +171,18 @@ class Abonne implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLockedUntil(?\DateTime $lockedUntil): static
     {
         $this->lockedUntil = $lockedUntil;
+        return $this;
+    }
+
+    public function getModePaiement(): ?string
+    {
+        return $this->modePaiement;
+    }
+
+    public function setModePaiement(string $modePaiement): static
+    {
+        $this->modePaiement = $modePaiement;
+
         return $this;
     }
 }

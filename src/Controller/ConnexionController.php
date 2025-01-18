@@ -84,7 +84,7 @@ class ConnexionController extends AbstractController
 
                 $servicelient = $serviceSecondaryDataBase->getDataFromSecondaryDb();
                 $adminRole = "ROLE_ADMIN";
-                $identifiant ="242057676747"; //$servicelient['identifiant'] ?? null;
+                $identifiant = $servicelient['identifiant'] ?? null;
                 $d = $user->getRoles();
                 
                 //dd($admin);
@@ -100,12 +100,34 @@ class ConnexionController extends AbstractController
                 }*/
 
                 if ($adminRole === $d[0] && $user->getMsisdn() === $identifiant) {
-                                       
-                    /*$sessionData['identifiant'] = $servicelient['identifiant'];
+                 /*                      
+                    $sessionData['identifiant'] = $servicelient['identifiant'];
                     $sessionData['client'] = $servicelient['client'];
                     $sessionData['email'] = $servicelient['email'];
                     $sessionData['secteur_activite'] = $servicelient['secteur_activite'];
-                    $sessionData['situationGeographique'] = $servicelient['situationGeographique'];*/
+                    $sessionData['situationGeographique'] = $servicelient['situationGeographique'];
+                    $sessionData['NomPlateforme'] = $servicelient['NomPlateforme'];
+                    $sessionData['logoEntete'] = $servicelient['logoEntete'];
+                    $sessionData['LogoNavbar'] = $servicelient['LogoNavbar'];
+                    $sessionData['imageAcceuil'] = $servicelient['imageAcceuil'];
+                    $sessionData['titreAcceuil'] = $servicelient['titreAcceuil'];
+                    $sessionData['sousTitre'] = $servicelient['sousTitre'];
+                    $sessionData['titreStatistiques'] = $servicelient['titreStatistiques'];
+                    $sessionData['sousTitreStat'] = $servicelient['sousTitreStat'];
+                    $sessionData['nombreOffres'] = $servicelient['nombreOffres'];
+                    $sessionData['nombrePostulants'] = $servicelient['nombrePostulants'];
+                    $sessionData['nombreEntreprises'] = $servicelient['nombreEntreprises'];
+                    $sessionData['nombreEmploisPourvus'] = $servicelient['nombreEmploisPourvus'];
+                    $sessionData['BandeActionTitre'] = $servicelient['BandeActionTitre'];
+                    $sessionData['BandeActionSousTitre'] = $servicelient['BandeActionSousTitre'];
+                    $sessionData['LienFacebook'] = $servicelient['LienFacebook'];
+                    $sessionData['LienTwitter'] = $servicelient['LienTwitter'];
+                    $sessionData['LienInstagram'] = $servicelient['LienInstagram'];
+                    $sessionData['LinkedIn'] = $servicelient['LinkedIn'];
+                    $sessionData['Addresse'] = $servicelient['Addresse'];
+                    $sessionData['Telephone'] = $servicelient['Telephone'];
+                    $sessionData['textFooter'] = $servicelient['textFooter'];
+                    */
                     $redirectTo = $this->redirectToRoute('app_admin');
                     $cookieDuration = 3600;
                 } else {

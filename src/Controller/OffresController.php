@@ -15,20 +15,21 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use App\Entity\Entreprise;
 use App\Entity\Offre;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use App\Service\ServiceSecondaryDataBase;
 
 class OffresController extends AbstractController
 {
     #[Route('/offres/{slug}-{id}', name: 'app_offres', requirements: ['id' => '\d+', 'slug' => '[a-zA-Z0-9/-]+'])]
-    public function index(OffreRepository $offreRepository,RequestStack $requestStack, EntrepriseRepository $entrepriseRepository, Request $request, int $id, string $slug, SessionInterface $session): Response 
+    public function index(OffreRepository $offreRepository,ServiceSecondaryDataBase $serviceSecondaryDataBase,RequestStack $requestStack, EntrepriseRepository $entrepriseRepository, Request $request, int $id, string $slug, SessionInterface $session): Response 
     {
         $job = $offreRepository->find($id);
         $session = $requestStack->getSession();
         $Abonne = $session->get('Abonne');
         $connected = false;
         $idUser = '';
+        $monSite = $serviceSecondaryDataBase->getDataFromSecondaryDb();
 
         if($Abonne)
         {
@@ -55,18 +56,9 @@ class OffresController extends AbstractController
         return $this->render('offres/index.html.twig', [
             'job' => $job,
             'entreprise' => $entreprise,
-        ]);
-    }
-
-
-
-    #[Route('/formOffre', name: 'creer-offre')]
-    public function redirection(EntrepriseRepository $entrepriseRepository): Response
-    {
-        $entreprises = $entrepriseRepository->afficherEntrepriseAdmin();
-
-        return $this->render('formulaire/new_offers.html.twig', [
-            'entreprises' => $entreprises,
+            'monSite'=>$monSite,
+            'statut'=>$connected,
+            'idAbonne'=>$idUser,
         ]);
     }
 
@@ -153,16 +145,6 @@ class OffresController extends AbstractController
 
         return $this->redirectToRoute('creer-offre', [
             'entreprises' => $entityManager->getRepository(Entreprise::class)->findAll()
-        ]);
-    }
-
-    #[Route('admin/voir/offre', name: 'admin-voir.offre')]
-    public function AffichageAdmin(OffreRepository $offreRepository): Response
-    {
-        $offres = $offreRepository->findAll();
-
-        return $this->render('offres/voir_admin.html.twig', [
-            'offres' => $offres,
         ]);
     }
 

@@ -16,9 +16,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(OffreRepository $offreRepository,RequestStack $requestStack,PublicityRepository $publicityRepository,entrepriseRepository $entrepriseRepository,SessionInterface $session, Request $request): Response
+    public function index(OffreRepository $offreRepository,ServiceSecondaryDataBase $serviceSecondaryDataBase,RequestStack $requestStack,PublicityRepository $publicityRepository,entrepriseRepository $entrepriseRepository,SessionInterface $session, Request $request): Response
     {
         // Nombre d'offres par page (par défaut : 10)
+        $monSite = $serviceSecondaryDataBase->getDataFromSecondaryDb();
         $session = $requestStack->getSession();
         $Abonne = $session->get('Abonne');
         $connected = false;
@@ -43,6 +44,7 @@ class HomeController extends AbstractController
 
         // Récupération des offres pour la page actuelle
         $offres = $offreRepository->afficherOffres($produitsParPage, $premiereEntree);
+        $lastNew = $offreRepository->findLastNew();
         
         // Rendu du template avec les données nécessaires
         return $this->render('home/index.html.twig', [
@@ -56,6 +58,8 @@ class HomeController extends AbstractController
             'premiereEntree' => $premiereEntree,
             'statut'=>$connected,
             'idAbonne'=>$idUser,
+            'lastOffer'=>$lastNew,
+            'monSite'=>$monSite,
         ]);
     }
     

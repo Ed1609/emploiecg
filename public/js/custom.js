@@ -155,7 +155,7 @@ jQuery(function($) {
 	stickyFillInit();
 
 
-	// navigation
+/*	// navigation
   var OnePageNavigation = function() {
     var navToggler = $('.site-menu-toggle');
    	$("body").on("click", ".main-menu li a[href^='#'], .smoothscroll[href^='#'], .site-mobile-menu .site-nav-wrap li a", function(e) {
@@ -172,7 +172,7 @@ jQuery(function($) {
     });
   };
   OnePageNavigation();
-
+*/
   var counterInit = function() {
 		if ( $('.section-counter').length > 0 ) {
 			$('.section-counter').waypoint( function( direction ) {

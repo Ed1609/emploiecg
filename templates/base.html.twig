@@ -25,6 +25,16 @@
     </head>
     
     <body id="top">
+    
+        <div class="site-mobile-menu site-navbar-target">
+                <div class="site-mobile-menu-header">
+                  <div class="site-mobile-menu-close mt-3">
+                    <span class="icon-close2 js-menu-toggle"></span>
+                  </div>
+                </div>
+            <div class="site-mobile-menu-body">
+            </div>
+        </div> <!-- .site-mobile-menu -->
 
         {{ render(controller('App\\Controller\\NavbarController::index')) }}
         
@@ -46,6 +56,7 @@
             <script src="{{ asset('js/jquery.animateNumber.min.js') }}"></script>
             <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+            <script src="{{ asset('js/custom.js') }}"></script>
         {% endblock %}
     </body>
 </html>

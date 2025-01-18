@@ -46,6 +46,8 @@ class AbonneController extends AbstractController
             $abonne->setTentativeconnexion(0);
             $abonne->setPassword($passwordHasher->hashPassword($abonne, $request->request->get('password')));
             $abonne->setCreateAt(new \DateTimeImmutable());
+            $abonne->setModePaiement($request->request->get('mode_debit'));
+            $modePaiement = $request->request->get('mode_debit');
 
             $blacklistService->deleteByMsisdn($msisdn);
             
@@ -53,7 +55,13 @@ class AbonneController extends AbstractController
             $em->flush();
     
             // 📲 Envoi de SMS de bienvenue
-            $message = "Bienvenue sur notre plateforme d'alerte emploi, le coût de souscription est de {$cout} Frs.";
+            if($modePaiement = 'AM')
+            {
+                $message = "Bienvenue sur notre plateforme d'alerte emploi, le coût de souscription est de {$cout} Frs par AM.";
+
+            }else{
+                $message="Bienvenue sur notre plateforme d'alerte emploi, le coût de souscription est de {$cout} Frs par credit.";
+            }
             
             $smsService->sendSms($msisdn, '', $message);
             

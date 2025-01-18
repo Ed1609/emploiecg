@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PublicityRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PublicityRepository::class)]
@@ -27,6 +28,9 @@ class Publicity
 
     #[ORM\Column(length: 255)]
     private ?string $contact = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $textPub = null;
 
     public function getId(): ?int
     {
@@ -89,6 +93,18 @@ class Publicity
     public function setContact(string $contact): static
     {
         $this->contact = $contact;
+
+        return $this;
+    }
+
+    public function getTextPub(): ?string
+    {
+        return $this->textPub;
+    }
+
+    public function setTextPub(?string $textPub): static
+    {
+        $this->textPub = $textPub;
 
         return $this;
     }

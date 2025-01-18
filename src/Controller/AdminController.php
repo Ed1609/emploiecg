@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Repository\AbonneRepository;
 use App\Entity\Blacklist;
 use App\Repository\BlacklistRepository;
+use App\Repository\OffreRepository;
+use App\repository\EntrepriseRepository;
 use App\Service\BlacklistService;
 use App\Service\SmsService;
 use App\Entity\Abonne;
@@ -99,4 +101,24 @@ class AdminController extends AbstractController
         return $this->render('abonne/new.html.twig');
     }
 
+    #[Route('admin/voir/offre', name: 'admin-voir.offre')]
+    public function AffichageAdmin(OffreRepository $offreRepository): Response
+    {
+        $offres = $offreRepository->findAll();
+
+        return $this->render('offres/voir_admin.html.twig', [
+            'offres' => $offres,
+        ]);
+    }
+
+
+    #[Route('/formOffre', name: 'creer-offre')]
+    public function redirection(EntrepriseRepository $entrepriseRepository): Response
+    {
+        $entreprises = $entrepriseRepository->afficherEntrepriseAdmin();
+
+        return $this->render('formulaire/new_offers.html.twig', [
+            'entreprises' => $entreprises,
+        ]);
+    }
 }

@@ -37,6 +37,16 @@ class OffreRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findLastNew(): array
+    {
+        return $this->createQueryBuilder('o')
+            ->orderBy('o.id', 'DESC')
+            ->setMaxResults(3)
+            ->setFirstResult(1)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function afficherOffresAdmin()
     {
         return $this->createQueryBuilder('o')
@@ -44,6 +54,8 @@ class OffreRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    
 
     public function countAllProducts(): int
     {
