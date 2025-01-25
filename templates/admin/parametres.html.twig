@@ -1,0 +1,198 @@
+{% extends "basesecond.html.twig" %}
+
+{% block title %}Parametre{% endblock %}
+
+{% block stylesheets %}
+    <link rel="shortcut icon" href="{{ asset('images/ftco-32x32.png') }}">
+    <link rel="stylesheet" href="{{ asset('css/custom-bs.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/jquery.fancybox.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-select.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('fonts/icomoon/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('fonts/line-icons/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/animate.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+{% endblock %}
+
+{% block body %}
+    <form action="#">
+        <!-- Section Paramètres de Base -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title"><i class="bi bi-gear-fill"></i> Paramètres de Base</h2>
+                <div class="mb-3">
+                    <label for="identifiant" class="form-label"><i class="bi bi-person-circle"></i> Identifiant</label>
+                    <input type="text" class="form-control" id="identifiant" name="identifiant" placeholder="Entrez votre identifiant">
+                </div>
+                <div class="mb-3">
+                    <label for="nomPlateforme" class="form-label"><i class="bi bi-building"></i> Nom de la plateforme</label>
+                    <input type="text" class="form-control" id="nomPlateforme" name="nom_plateforme" placeholder="Entrez le nom de la plateforme">
+                </div>
+                <div class="mb-3">
+                    <label for="utilisateurPlateforme" class="form-label"><i class="bi bi-people-fill"></i> Utilisateur de la plateforme</label>
+                    <input type="text" class="form-control" id="utilisateurPlateforme" name="utilisateurPlateforme" placeholder="Entrez l'utilisateur de la plateforme">
+                </div>
+                <div class="mb-3">
+                    <label for="logoEntete" class="form-label"><i class="bi bi-card-image"></i> Logo entête</label>
+                    <input type="file" class="form-control" id="logoEntete" name="logoEntete" accept="image/*">
+                </div>
+                <div class="mb-3">
+                    <label for="logoNavBar" class="form-label"><i class="bi bi-card-image"></i> Logo barre de navigation</label>
+                    <input type="file" class="form-control" id="logoNavBar" name="logoNavBar" accept="image/*">
+                </div>
+            </div>
+        </div>
+        <!-- Section Header -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title"><i class="bi bi-card-heading"></i> Header</h2>
+                <div class="mb-3">
+                    <label for="motCle" class="form-label"><i class="bi bi-key"></i> Mot Clé</label>
+                    <input type="text" class="form-control" id="motCle" name="mot_cle" placeholder="Entrez un mot clé">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label"><i class="bi bi-textarea-t"></i> Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="4" placeholder="Entrez une description"></textarea>
+                </div>
+            </div>
+        </div>
+        <!-- Section Page d'accueil -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title"><i class="bi bi-house"></i> Page d'accueil</h2>
+                <div class="mb-3">
+                    <label for="imageAccueil" class="form-label"><i class="bi bi-image"></i> Image de la page d'accueil</label>
+                    <input type="file" class="form-control" id="imageAccueil" name="imageAccueil" accept="image/*">
+                </div>
+                <div class="mb-3">
+                    <label for="titre" class="form-label"><i class="bi bi-fonts"></i> Titre de la page d'accueil</label>
+                    <input type="text" class="form-control" id="titre" name="titre" placeholder="Entrez le titre de la page d'accueil">
+                </div>
+                <div class="mb-3">
+                    <label for="sousTitre" class="form-label"><i class="bi bi-textarea-resize"></i> Sous-titre de la page d'accueil</label>
+                    <input type="text" class="form-control" id="sousTitre" name="sousTitre" placeholder="Entrez le Sous-titre de la page d'accueil">
+                </div>
+            </div>
+        </div>
+        <!-- Section Bande d'action -->
+        <div class="card mb-4" >
+            <div class="card-body">
+                <h2 class="card-title"><i class="bi bi-megaphone"></i> Bande d'action</h2>   
+                    <!-- Titre -->
+                    <div class="mb-3">
+                        <label for="titreBande" class="form-label"><i class="bi bi-badge-ad"></i> Titre de la bande d'action</label>
+                        <input type="text" class="form-control" id="titreBande" name="titreBande" placeholder="Entrez le titre">
+                    </div>
+                    <!-- Sous-titre -->
+                    <div class="mb-3">
+                        <label for="sousTitreBande" class="form-label"><i class="bi bi-text-indent-left"></i> Sous-titre de la bande d'action</label>
+                        <input type="text" class="form-control" id="sousTitreBande" name="sousTitreBande" placeholder="Entrez le Sous-titre">
+                    </div>
+            </div>
+        </div>
+        <!-- Section Statistique du site -->
+        <div class="card mb-4">
+            <div class="card-body">
+                    <!-- New Section: Statistique du site -->
+                <h2 class="card-title"><i class="bi bi-bar-chart-line"></i> Statistique du site</h2>
+                <!-- Titre Stat -->
+                <div class="mb-3">
+                    <label for="titreStat" class="form-label"><i class="bi bi-graph-up"></i> Titre Stat</label>
+                    <input type="text" class="form-control" id="titreStat" name="titre_stat" placeholder="Entrez le titre des statistiques">
+                </div>
+                <!-- Sous Titre Stat -->
+                <div class="mb-3">
+                    <label for="sousTitreStat" class="form-label"><i class="bi bi-graph-down"></i> Sous Titre Stat</label>
+                    <input type="text" class="form-control" id="sousTitreStat" name="sous_titre_stat" placeholder="Entrez le sous-titre des statistiques">
+                </div>
+                <!-- Side by Side Statistics -->
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="abonnements" class="form-label"><i class="bi bi-people"></i> Abonnements</label>
+                        <input type="number" class="form-control" id="abonnements" name="abonnements" placeholder="Nombre d'abonnements">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="offresPostulees" class="form-label"><i class="bi bi-box-arrow-in-right"></i> Offres Postulées</label>
+                        <input type="number" class="form-control" id="offresPostulees" name="offres_postulees" placeholder="Nombre d'offres postulées">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="emploisPourvus" class="form-label"><i class="bi bi-briefcase"></i> Emplois Pourvus</label>
+                        <input type="number" class="form-control" id="emploisPourvus" name="emplois_pourvus" placeholder="Nombre d'emplois pourvus">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="entreprise" class="form-label"><i class="bi bi-buildings"></i> Entreprise</label>
+                        <input type="number" class="form-control" id="entreprise" name="entreprise" placeholder="Nombre d'entreprises">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-body">
+                <!-- Section: Liens -->
+                <h2 class="card-title"><i class="bi bi-link-45deg"></i> Liens</h2>
+                <!-- Lien Facebook -->
+                <div class="mb-3">
+                    <label for="lienFacebook" class="form-label"><i class="bi bi-facebook"></i> Lien Facebook</label>
+                    <input type="url" class="form-control" id="lienFacebook" name="lien_facebook" placeholder="Entrez le lien Facebook">
+                </div>
+                <!-- Lien Twitter -->
+                <div class="mb-3">
+                    <label for="lienTwitter" class="form-label"><i class="bi bi-twitter"></i> Lien Twitter</label>
+                    <input type="url" class="form-control" id="lienTwitter" name="lien_twitter" placeholder="Entrez le lien Twitter">
+                </div>
+                <!-- Lien Instagram -->
+                <div class="mb-3">
+                    <label for="lienInstagram" class="form-label"><i class="bi bi-instagram"></i> Lien Instagram</label>
+                    <input type="url" class="form-control" id="lienInstagram" name="lien_instagram" placeholder="Entrez le lien Instagram">
+                </div>
+                <!-- LinkedIn -->
+                <div class="mb-3">
+                    <label for="linkedIn" class="form-label"><i class="bi bi-linkedin"></i> LinkedIn</label>
+                    <input type="url" class="form-control" id="linkedIn" name="linkedin" placeholder="Entrez le lien LinkedIn">
+                </div>
+            </div>
+        </div>
+            
+        <!-- Section Contact & Infos -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title"><i class="bi bi-person-lines-fill"></i> Contact & Infos</h2>
+                <div class="mb-3">
+                    <label for="addresse" class="form-label"><i class="bi bi-geo-alt"></i> Adresse*</label>
+                    <input type="text" class="form-control" id="addresse" name="addresse" placeholder="Entrez l'adresse" required>
+                </div>
+                <div class="mb-3">
+                    <label for="telephone" class="form-label"><i class="bi bi-telephone"></i> Téléphone*</label>
+                    <input type="tel" class="form-control" id="telephone" name="telephone" placeholder="Entrez le numéro de téléphone" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label"><i class="bi bi-envelope"></i> Email*</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Entrez l'adresse email" required>
+                </div>
+                <!-- Secteur Activité -->
+                <div class="mb-3">
+                    <label for="secteurActivite" class="form-label"><i class="bi bi-briefcase"></i> Secteur Activité</label>
+                    <input type="text" class="form-control" id="secteurActivite" name="secteur_activite" placeholder="Entrez le secteur d'activité">
+                </div>
+                <!-- Situation Géographique -->
+                <div class="mb-3">
+                    <label for="situationGeographique" class="form-label"> <i class="bi bi-compass"></i> Situation Géographique</label>
+                    <input type="text" class="form-control" id="situationGeographique" name="situation_geographique" placeholder="Entrez la situation géographique">
+                </div>
+                <!-- Texte Footer -->
+                <div class="mb-3">
+                    <label for="textFooter" class="form-label"><i class="bi bi-chat-text"></i> Texte Footer</label>
+                    <textarea class="form-control" id="textFooter" name="text_footer" rows="3" placeholder="Entrez le texte pour le pied de page"></textarea>
+                </div>
+            </div>
+        </div>
+        <!-- Submit Button -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-lg">Enregistrer</button>
+        </div>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- Scripts here -->
+{% endblock %}

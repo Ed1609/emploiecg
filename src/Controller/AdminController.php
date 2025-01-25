@@ -11,7 +11,8 @@ use App\Repository\AbonneRepository;
 use App\Entity\Blacklist;
 use App\Repository\BlacklistRepository;
 use App\Repository\OffreRepository;
-use App\repository\EntrepriseRepository;
+use App\Repository\EntrepriseRepository;
+use App\Entity\Entreprise;
 use App\Service\BlacklistService;
 use App\Service\SmsService;
 use App\Entity\Abonne;
@@ -112,13 +113,20 @@ class AdminController extends AbstractController
     }
 
 
-    #[Route('/formOffre', name: 'creer-offre')]
+    #[Route('admin/formOffre', name: 'creer-offre')]
     public function redirection(EntrepriseRepository $entrepriseRepository): Response
     {
         $entreprises = $entrepriseRepository->afficherEntrepriseAdmin();
 
-        return $this->render('formulaire/new_offers.html.twig', [
+        return $this->render('admin/new_offers.html.twig', [
             'entreprises' => $entreprises,
         ]);
+    }
+
+
+    #[Route('admin/parametre', name: 'parametres')]
+    public function parametre()
+    {
+        return $this->render('admin/parametres.html.twig');
     }
 }

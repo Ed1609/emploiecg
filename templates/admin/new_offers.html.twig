@@ -1,0 +1,172 @@
+{% extends "basesecond.html.twig" %}
+
+{% block title %}Parametre{% endblock %}
+
+{% block stylesheets %}
+    <link rel="shortcut icon" href="{{ asset('images/ftco-32x32.png') }}">
+    <link rel="stylesheet" href="{{ asset('css/custom-bs.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/jquery.fancybox.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-select.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('fonts/icomoon/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('fonts/line-icons/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/animate.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<form action="#" method="POST">
+    <!-- Section Ajouter une nouvelle offre -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title"><i class="bi bi-plus-circle-fill"></i> Ajouter une nouvelle offre</h2>
+            
+            <!-- Titre -->
+            <div class="mb-3">
+                <label for="titre" class="form-label"><i class="bi bi-tag"></i> Titre :</label>
+                <input type="text" class="form-control" id="titre" name="titre" placeholder="Entrez le titre de l'offre" required>
+            </div>
+            
+            <!-- Secteur -->
+            <div class="mb-3">
+                <label for="secteur" class="form-label"><i class="bi bi-briefcase"></i> Secteur :</label>
+                <input type="text" class="form-control" id="secteur" name="secteur" placeholder="Entrez le secteur" required>
+            </div>
+
+            <!-- Type de contrat -->
+            <div class="mb-3">
+                <label for="type_contrat" class="form-label"><i class="bi bi-file-earmark-text"></i> Type de contrat :</label>
+                <select class="form-select" id="type_contrat" name="type_contrat" required>
+                    <option value="CDI">CDI</option>
+                    <option value="CDD">CDD</option>
+                    <option value="Stage">Stage</option>
+                    <option value="Freelance">Freelance</option>
+                </select>
+            </div>
+
+            <!-- Lieu -->
+            <div class="mb-3">
+                <label for="lieu" class="form-label"><i class="bi bi-pin-map"></i> Lieu :</label>
+                <select class="form-select" id="lieu" name="lieu" required>
+                    <option value="Brazzaville">Brazzaville</option>
+                    <option value="Pointe-Noire">Pointe-Noire</option>
+                    <option value="Dolisie">Dolisie</option>
+                </select>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+                <label for="description" class="form-label"><i class="bi bi-file-text"></i> Description :</label>
+                <textarea class="form-control" id="description" name="description" rows="4" placeholder="Entrez la description de l'offre" required></textarea>
+            </div>
+
+            <!-- Entreprise -->
+            <div class="mb-3">
+                <label for="entreprise" class="form-label"><i class="bi bi-building"></i> Entreprise :</label>
+                <select class="form-select" id="entreprise" name="entreprise" required>
+                    {% for entreprise in entreprises %}
+                        <option value="{{ entreprise.id }}">{{ entreprise.libele }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Date d'expiration -->
+            <div class="mb-3">
+                <label for="date_expiration_at" class="form-label"><i class="bi bi-calendar-x"></i> Date d'expiration :</label>
+                <input type="date" class="form-control" id="date_expiration_at" name="date_expiration_at" required>
+            </div>
+
+            <!-- Slug -->
+            <div class="mb-3">
+                <label for="slug" class="form-label"><i class="bi bi-link"></i> Slug :</label>
+                <input type="text" class="form-control" id="slug" name="slug">
+            </div>
+
+            <!-- Salaire -->
+            <div class="mb-3">
+                <label for="salaire" class="form-label"><i class="bi bi-cash"></i> Salaire :</label>
+                <input type="text" class="form-control" id="salaire" name="salaire" placeholder="Entrez le salaire">
+            </div>
+
+            <!-- Temps de travail -->
+            <div class="mb-3">
+                <label for="tempsTaff" class="form-label"><i class="bi bi-clock"></i> Temps de travail :</label>
+                <select class="form-select" id="tempsTaff" name="tempsTaff" required>
+                    <option value="Part Time">Mi-temps</option>
+                    <option value="Full Time">Plein temps</option>
+                </select>
+            </div>
+
+            <!-- Lien Employeur -->
+            <div class="mb-3">
+                <label for="LienEmployeur" class="form-label"><i class="bi bi-link"></i> Lien Employeur :</label>
+                <input type="text" class="form-control" id="LienEmployeur" name="LienEmployeur">
+            </div>
+
+            <!-- Image d'illustration -->
+            <div class="mb-3">
+                <label for="illustrationImage" class="form-label"><i class="bi bi-image"></i> Image d'illustration :</label>
+                <input type="file" class="form-control" id="illustrationImage" name="illustrationImage" accept="image/png">
+                <small class="form-text text-muted">Seuls les fichiers PNG de moins de 5Mo sont autorisés.</small>
+            </div>
+
+            <!-- Responsabilités -->
+            <div class="mb-3">
+                <label for="responsibilities" class="form-label"><i class="bi bi-briefcase"></i> Responsabilités :</label>
+                <input type="text" class="form-control" id="responsibilities" name="responsibilities" placeholder="Responsabilité 1, Responsabilité 2">
+            </div>
+
+            <!-- Compétences -->
+            <div class="mb-3">
+                <label for="competences" class="form-label"><i class="bi bi-lightbulb"></i> Compétences :</label>
+                <input type="text" class="form-control" id="competences" name="competences" placeholder="Compétence 1, Compétence 2">
+            </div>
+
+            <!-- Niveau requis -->
+            <div class="mb-3">
+                <label for="niveauRequis" class="form-label"><i class="bi bi-check-circle"></i> Niveau requis :</label>
+                <input type="text" class="form-control" id="niveauRequis" name="niveauRequis">
+            </div>
+
+            <!-- Expérience -->
+            <div class="mb-3">
+                <label for="experience" class="form-label"><i class="bi bi-briefcase"></i> Expérience :</label>
+                <input type="text" class="form-control" id="experience" name="experience">
+            </div>
+
+            <!-- Autres Détails -->
+            <div class="mb-3">
+                <label for="AutreDetails" class="form-label"><i class="bi bi-info-circle"></i> Autres Détails :</label>
+                <textarea class="form-control" id="AutreDetails" name="AutreDetails" rows="3"></textarea>
+            </div>
+
+            <!-- Genre -->
+            <div class="mb-3">
+                <label for="genre" class="form-label"><i class="bi bi-gender-ambiguous"></i> Genre :</label>
+                <select class="form-select" id="genre" name="genre">
+                    <option value="M-F">Homme - Femme</option>
+                    <option value="M">Homme</option>
+                    <option value="F">Femme</option>
+                </select>
+            </div>
+
+            <!-- Statut de l'offre -->
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="statut_offre" name="statut_offre">
+                <label class="form-check-label" for="statut_offre"><i class="bi bi-toggle-on"></i> Statut de l'offre</label>
+            </div>
+
+            <!-- Bouton de soumission -->
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Ajouter l'offre</button>
+        </div>
+    </div>
+</form>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    <!-- Scripts here -->
+{% endblock %}

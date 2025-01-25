@@ -62,6 +62,7 @@ class OffresController extends AbstractController
         ]);
     }
 
+    
     #[Route('/ajoute-offre', name: 'nouvelle.offre', methods: ['POST'])]
     public function ajouter_offre(Request $request, EntityManagerInterface $entityManager, EntrepriseRepository $entrepriseRepository,#[Autowire('%uploads_directory%')]string $uploads_directory): Response
     {
@@ -147,6 +148,7 @@ class OffresController extends AbstractController
             'entreprises' => $entityManager->getRepository(Entreprise::class)->findAll()
         ]);
     }
+
 
     #[Route('abonne/voir-offre', name: 'abo-voir.offre')]
     public function Affichage(OffreRepository $offreRepository, RequestStack $requestStack,PublicityRepository $publicityRepository, EntrepriseRepository $entrepriseRepository, Request $request): Response
