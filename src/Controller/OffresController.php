@@ -64,89 +64,88 @@ class OffresController extends AbstractController
 
     
     #[Route('/ajoute-offre', name: 'nouvelle.offre', methods: ['POST'])]
-    public function ajouter_offre(Request $request, EntityManagerInterface $entityManager, EntrepriseRepository $entrepriseRepository,#[Autowire('%uploads_directory%')]string $uploads_directory): Response
+    public function ajouter_offre(Request $request,EntityManagerInterface $entityManager,EntrepriseRepository $entrepriseRepository,#[Autowire('%uploads_directory%')] string $uploads_directory): Response 
     {
-        if ($request->isMethod('POST')) {
-            $data = $request->request->all();
-
-            $offre = new Offre();
-
-            // Champs texte simples
-            $offre->setTitre($data['titre']);
-            $offre->setSecteur($data['secteur']);
-            $offre->setTypeContrat($data['type_contrat']);
-            $offre->setLieu($data['lieu']);
-            $offre->setDescription($data['Description']);
-            $offre->setSlug($data['slug']);
-            $offre->setSalaire($data['salaire'] ?? null);
-            $offre->setLienEmployeur($data['LienEmployeur'] ?? null);
-            $offre->setTempsTaff($data['tempsTaff'] ?? null);
-            $offre->setNiveauRequis($data['niveauRequis'] ?? null);
-            $offre->setAutreDetails($data['AutreDetails'] ?? null);
-            $offre->setGenre($data['genre'] ?? null);
-            $offre->setExperience($data['experience'] ?? null);
-            
-            $illustrationFile = $request->files->get('illustrationImage');
-            //dd($illustrationFile);
-
-            if ($illustrationFile instanceof \Symfony\Component\HttpFoundation\File\UploadedFile) {
-                // Vérifiez le type du fichier
-                if ($illustrationFile->getClientMimeType() !== 'image/png') {
-                    $this->addFlash('error', 'Seuls les fichiers PNG sont autorisés.');
-                    return $this->redirectToRoute('creer-offre');
-                }
-            
-                // Vérifiez la taille du fichier
-                if ($illustrationFile->getSize() > 5 * 1024 * 1024) {
-                    $this->addFlash('error', 'La taille du fichier ne doit pas dépasser 5 Mo.');
-                    return $this->redirectToRoute('creer-offre');
-                }
-            
-                $newFilename = uniqid() . '.' . $illustrationFile->guessExtension();
-                try {
-                    $illustrationFile->move($uploads_directory, $newFilename);
-                    $offre->setIllustrationImage($newFilename);
-                } catch (FileException $e) {
-                    $this->addFlash('error', 'Échec du téléchargement de l\'image.');
-                    return $this->redirectToRoute('creer-offre');
-                }
-            } else {
-                $this->addFlash('error', 'L\'image est obligatoire.');
-                return $this->redirectToRoute('creer-offre');
-            }
-            
-
-            // Champs tableau
-            $offre->setReponsabilities(array_map('trim', explode(',', $data['responsibilities'] ?? '')));
-            $offre->setCompetences(array_map('trim', explode(',', $data['competences'] ?? '')));
-
-            // Dates
-            $offre->setDateMiseEnLigneAt(new \DateTimeImmutable());
-            $offre->setDateExpirationAt(new \DateTimeImmutable($data['date_expiration_at']));
-
-            // Statut
-            $offre->setStatutOffre(isset($data['statut_offre']));
-
-            // Association avec Entreprise
-            $entreprise = $entrepriseRepository->find($data['entreprise']);
-            if ($entreprise) {
-                $offre->setEntreprise($entreprise);
-            } else {
-                $this->addFlash('error', 'Entreprise non trouvée.');
-                return $this->redirectToRoute('creer-offre');
-            }
-
-            // Sauvegarde
-            $entityManager->persist($offre);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Offre ajoutée avec succès!');
-            return $this->redirectToRoute('voir.offre');
+        if (!$request->isMethod('POST')) {
+            return $this->redirectToRoute('creer-offre');
         }
+    
+        $data = array_map('trim', $request->request->all());
+        $offre = new Offre();
+        
+        $offre->setTitre($data['titre']);
+        $offre->setSecteur($data['secteur']);
+        $offre->setTypeContrat($data['type_contrat']);
+        $offre->setLieu($data['lieu']);
+        $offre->setDescription($data['description']);
+        $offre->setSlug($data['slug']);
+        $offre->setSalaire($data['salaire'] ?? null);
+        $offre->setLienEmployeur($data['LienEmployeur'] ?? null);
+        $offre->setTempsTaff($data['tempsTaff'] ?? null);
+        $offre->setNiveauRequis($data['niveauRequis'] ?? null);
+        $offre->setAutreDetails($data['AutreDetails'] ?? null);
+        $offre->setGenre($data['genre'] ?? null);
+        $offre->setExperience($data['experience'] ?? null);
+        $offre->setReponsabilities(array_filter(array_map('trim', explode(',', $data['responsibilities'] ?? ''))));
+        $offre->setCompetences(array_filter(array_map('trim', explode(',', $data['competences'] ?? ''))));
+    
+        $offre->setDateMiseEnLigneAt(new \DateTimeImmutable());
+    
+        try 
+        {
+            $offre->setDateExpirationAt(new \DateTimeImmutable($data['date_expiration_at']));
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Date d\'expiration invalide.');
+            return $this->redirectToRoute('creer-offre');
+        }
+    
+        $statut = 0;
+        $offre->setStatutOffre(!empty($data[$statut]));
+    
+        $entreprise = $entrepriseRepository->find($data['entreprise'] ?? null);
+        if (!$entreprise) {
+            $this->addFlash('error', 'Entreprise non trouvée.');
+            return $this->redirectToRoute('creer-offre');
+        }
+    
+        $offre->setEntreprise($entreprise);
+    
+        $illustrationFile = $request->files->get('illustrationImage');
+        if (!$illustrationFile) {
+            $this->addFlash('error', 'Aucune image envoyée.');
+            return $this->redirectToRoute('creer-offre');
+        }
+        //dd($illustrationFile);
 
-        return $this->redirectToRoute('creer-offre', [
-            'entreprises' => $entityManager->getRepository(Entreprise::class)->findAll()
-        ]);
+        if ($illustrationFile && $illustrationFile->isValid()) {
+            if (!in_array($illustrationFile->getClientMimeType(), ['image/png', 'image/jpeg', 'image/jpg'])) {
+                $this->addFlash('error', 'Seuls les fichiers PNG et JPG sont autorisés.');
+                return $this->redirectToRoute('creer-offre');
+            }
+        
+            if ($illustrationFile->getSize() > 5 * 1024 * 1024) {
+                $this->addFlash('error', 'La taille du fichier ne doit pas dépasser 5 Mo.');
+                return $this->redirectToRoute('creer-offre');
+            }
+        
+            $newFilename = uniqid() . '.' . $illustrationFile->guessExtension();
+            try {
+                $illustrationFile->move($uploads_directory, $newFilename);
+                $offre->setIllustrationImage($newFilename);
+            } catch (FileException $e) {
+                $this->addFlash('error', 'Échec du téléchargement de l\'image.');
+                return $this->redirectToRoute('creer-offre');
+            }
+        } else {
+            $this->addFlash('error', 'L\'image est obligatoire.');
+            return $this->redirectToRoute('creer-offre');
+        }
+    
+        $entityManager->persist($offre);
+        $entityManager->flush();
+    
+        $this->addFlash('success', 'Offre ajoutée avec succès!');
+        return $this->redirectToRoute('admin-voir.offre');
     }
 
 
@@ -176,18 +175,19 @@ class OffresController extends AbstractController
             return $this->render('offres/voir_abonne.html.twig', [
                 'home_offre' => $offres,
                 'nombreDePages' => $nombreDePages,
+                'premiereEntree' => $premiereEntree,                
                 'pageActuelle' => $pageActuelle,
                 'produitsParPage' => $produitsParPage,
                 'entreprise' => $entrepriseRepository->afficherEntrepriseAdmin(),
                 'total' => $total,
                 'publicite' => $publicityRepository->findAll(),
-                'premiereEntree' => $premiereEntree,
                 'idAbonne'=>$idUser,
                 'statut'=>$statut,
             ]);
         }else
         {
-            return $this->render('offres/error404.html.twig');
+            $this->addFlash('error', 'Veuillez vous identifier');
+            return $this->render('connexion/Cusindex.html.twig');
         }
     }
     

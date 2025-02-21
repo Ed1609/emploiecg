@@ -16,29 +16,27 @@ class AbonneRepository extends ServiceEntityRepository
         parent::__construct($registry, Abonne::class);
     }
 
+    public function countAllAbonnes(): int
+    {
+        return $this->createQueryBuilder('o')
+            ->select('COUNT(o.id)')
+            ->where("o.roles LIKE :roles")
+            ->setParameter('roles', '%ROLE_USER%')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 
-    //    /**
-    //     * @return Abonne[] Returns an array of Abonne objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('a.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Abonne
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function afficherAbonnes(int $limit, int $offset): array
+    {
+        $offset = max(0, $offset);
+        
+        return $this->createQueryBuilder('o')
+            ->where("o.roles LIKE :roles")
+            ->setParameter('roles', '%ROLE_USER%')
+            ->orderBy('o.createAt', 'DESC')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->getQuery()
+            ->getResult();
+    }
 }

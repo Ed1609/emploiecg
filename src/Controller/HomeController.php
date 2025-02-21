@@ -19,6 +19,7 @@ class HomeController extends AbstractController
     public function index(OffreRepository $offreRepository,ServiceSecondaryDataBase $serviceSecondaryDataBase,RequestStack $requestStack,PublicityRepository $publicityRepository,entrepriseRepository $entrepriseRepository,SessionInterface $session, Request $request): Response
     {
         // Nombre d'offres par page (par défaut : 10)
+        
         $monSite = $serviceSecondaryDataBase->getDataFromSecondaryDb();
         $session = $requestStack->getSession();
         $Abonne = $session->get('Abonne');

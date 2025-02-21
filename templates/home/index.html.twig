@@ -82,7 +82,7 @@
                   <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                     <select class="selectpicker" id="mode_debit" data-style="btn-white btn-lg" data-width="100%" title="Quel mode de paiement ?" name="mode_debit" required>
                       <option value="credit">Crédit</option>
-                      <option value="am">AM</option>
+                      <option value="am">Airtel Money</option>
                     </select>
                   </div>
 
@@ -117,7 +117,7 @@
                   <a href="{{ path('abo-voir.offre') }}" class="btn btn-primary btn-lg me-md-3 mb-2 mb-md-0" id="btn1">
                     Découvrir toutes les offres
                   </a>
-                  <a href="button" class="btn btn-secondary btn-lg" id="btn2">
+                  <a href="{{path('abo-voir.bibliotheque')}}" class="btn btn-secondary btn-lg" id="btn2">
                     Accéder à la bibliothèque des modèles de CV
                   </a>
                 </div>
@@ -133,7 +133,7 @@
       </a>
 
     </section>
-    
+
     <section class="py-5 bg-image overlay-primary fixed overlay" id="next" style="background-image: url('images/hero_1.jpg');">
       <div class="container">
         <div class="row mb-5 justify-content-center">
@@ -189,12 +189,12 @@
                   <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
                     <a href="{{ path('app_offres', {'slug':item.slug,'id': item.id}) }}"></a>
                     <div class="job-listing-logo">
-                      <img src="{{ asset(item.entreprise.logo is not empty ? 'uploads/images/' ~ item.entreprise.logo : 'uploads/images/default-logo.png') }}" alt="{{item.entreprise.libele}}" class="img-fluid">
+                      <img src="{{ asset('images/logo.png') }}" alt="Logo" class="img-fluid" style="max-height: 50px;">
                     </div>
                     <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
                       <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
                         <h2>{{item.titre}}</h2>
-                        <strong>{{item.entreprise.libele}}</strong>
+                          <strong>monajob.com</strong>
                       </div>
                       <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
                         <span class="icon-room"></span> {{item.lieu}}
@@ -304,52 +304,49 @@
           </div>
           {% for item in entreprise %}
           <div class="col-6 col-lg-3 col-md-6 text-center">
-            <img src="{{asset('uploads/images/' ~ item.logo)}}" alt="Image" class="img-fluid logo-1">
+            <img src="{{asset('uploads/images/' ~ item.logo)}}" alt="Image" class="img-fluid" style="max-height: 75px;">
           </div>
           {% endfor %}
         </div>
       </div>
     </section>
-    <section class="bg-light pt-5 testimony-full">
-        
-        <div class="owl-carousel single-carousel">
-        {% for publicites in publicite %}
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-6 align-self-center text-center text-lg-left">
-                <blockquote>
-                  <p>&ldquo;{{publicites.textPub}}&rdquo;</p>
-                  <p><cite> &mdash; {{publicites.libele}}, {{publicites.demandeur}}</cite></p>
-                </blockquote>
-              </div>
-              <div class="col-lg-6 align-self-end text-center text-lg-right">
-                <img src="{{ asset('uploads/images/' ~ publicites.imagePub) }}" alt="Image" class="img-fluid mb-0">
-              </div>
+    
+<section class="bg-light pt-5 testimony-full">
+  <div id="carouselPublicite" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="false">
+    <div class="carousel-inner">
+      {% for publicites in publicite %}
+        <div class="carousel-item {% if loop.first %} active {% endif %}">
+          <div class="d-flex justify-content-center align-items-center" style="height: 400px; background-image: url('{{ asset('uploads/images/' ~ publicites.imagePub) }}'); background-size: cover; background-position: center;">
+            <div class="carousel-caption d-none d-md-block text-center">
+              <blockquote class="blockquote">
+                <p>&ldquo;{{ publicites.textPub }}&rdquo;</p>
+                <footer class="blockquote-footer">{{ publicites.libele }} <cite title="Source Title">, {{ publicites.demandeur }}</cite></footer>
+              </blockquote>
             </div>
           </div>
-        {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
 
-        <!--  <div class="container">
-            <div class="row">
-              <div class="col-lg-6 align-self-center text-center text-lg-left">
-                <blockquote>
-                  <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero dolores repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae.&rdquo;</p>
-                  <p><cite> &mdash; Chris Peters, @Google</cite></p>
-                </blockquote>
-              </div>
-              <div class="col-lg-6 align-self-end text-center text-lg-right">
-                <img src="images/person_transparent.png" alt="Image" class="img-fluid mb-0">
-              </div>
-            </div>
-          </div> -->
-      </div>
+    <!-- Contrôles du carrousel -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselPublicite" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselPublicite" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</section>
 
-    </section>
+
     
   </div>
 {% endblock %}
 
 {% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/form-validation.js') }}"></script>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>

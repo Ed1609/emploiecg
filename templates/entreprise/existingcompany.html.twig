@@ -1,0 +1,16 @@
+{% extends 'basesecond.html.twig' %}
+
+{% block title %}Entreprise existante{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="alert alert-danger">
+        <h4 class="fw-bold text-danger">Une entreprise avec le même nom existe déjà !</h4>
+        <p><strong>Nom :</strong> {{ society.libele }}</p>
+        <p><strong>Secteur :</strong> {{ society.secteur }}</p>
+        <p><strong>Description :</strong> {{ society.description }}</p>
+        <p><strong>Situation Géographique :</strong> {{ society.situationGeographique }}</p>
+    </div>
+    <a href="{{ path('entreprise_new') }}" class="btn btn-primary">Retour</a>
+</div>
+{% endblock %}

@@ -1,9 +1,9 @@
-{% extends 'base.html.twig' %}
+{% extends 'basesecond.html.twig' %}
 
 {% block title %}Liste des entreprises{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
+    <div class="container">
         <h1>Liste des entreprises</h1>
         {% for type, messages in app.flashes %}
             <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
@@ -31,6 +31,13 @@
                         <td>{{ entreprise.secteur }}</td>
                         <td>{{ entreprise.Description }}</td>
                         <td>{{ entreprise.situationGeographique }}</td>
+                        <td>
+                        <a href="{{ path('adminSupprime_entreprise', {id: entreprise.id}) }}" 
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Voulez-vous vraiment supprimer cet abonné ?')">
+                            Supprimer
+                        </a>
+                    </td>
                     </tr>
                 {% else %}
                     <tr>
@@ -39,5 +46,31 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div class="row pagination-wrap">
+          <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
+            <span>Voir {{ (premiereEntree + 1) }}-{{ (premiereEntree + entreprises|length) }} Entreprise sur {{ total }} </span>
+          </div>
+          <div class="col-md-6 text-center text-md-right">
+            <div class="custom-pagination ml-auto">
+              {% if pageActuelle > 1 %}
+                <a href="{{ path('entreprise_list', {'page': pageActuelle - 1, 'EntrepriseParPage': EntrepriseParPage}) }}" class="prev">Prev</a>
+              {% endif %}
+
+              <div class="d-inline-block">
+                {% for i in 1..nombreDePages %}
+                  <a href="{{ path('entreprise_list', {'page': i, 'EntrepriseParPage': EntrepriseParPage}) }}" 
+                     class="{% if i == pageActuelle %}active{% endif %} px-3 py-1 border bg-primary text-white">
+                    {{ i }}
+                  </a>
+                {% endfor %}
+              </div>
+
+              {% if pageActuelle < nombreDePages %}
+                <a href="{{ path('entreprise_list', {'page': pageActuelle + 1, 'EntrepriseParPage': EntrepriseParPage}) }}" class="next">Next</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <a href="{{ path('entreprise_new') }}" class="btn btn-primary mt-3">Ajouter une entreprise</a>
     </div>
 {% endblock %}

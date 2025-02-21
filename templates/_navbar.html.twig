@@ -19,31 +19,27 @@
           <li>
             <a href="{{ path('app_about') }}" class="nav-link {% if app.request.get('_route') == 'app_about' %}active{% endif %}">À propos de nous</a>
           </li>
+          <li>
+            <a href="{{ path('app_contact') }}" class="nav-link {% if app.request.get('_route') == 'app_contact' %}active{% endif %}">Contact</a>
+          </li>
           {% if statut %}
           <li>
             <a href="{{ path('abo-voir.offre') }}" class="nav-link {% if app.request.get('_route') == 'abo-voir.offre' %}active{% endif %}">Toutes les offres</a>
           </li>
-          {% endif %}
           <li>
-            <a href="{{ path('app_contact') }}" class="nav-link {% if app.request.get('_route') == 'app_contact' %}active{% endif %}">Contact</a>
+            <a href="{{path('abo-voir.bibliotheque')}}" class="nav-link {% if app.request.get('_route') == 'abo-voir.bibliotheque' %}active{% endif %}">Accéder aux modèles</a>
           </li>
-          {% if not statut %}
-          <li>
-            <a href="{{ path('connexion.abonne') }}" class="nav-link {% if app.request.get('_route') == 'connexion.abonne' %}active{% endif %}">S'identifier</a>
+          {% else %}
+          <li class="text-center mt-n4">
+              <a href="{{ path('connexion.abonne') }}" class="btn btn-warning  btn-sm text-black btn-search">
+                  <span class="icon-login icon mr-2"></span>S'identifier
+              </a>
           </li>
           {% endif %}
         </ul>
       </nav>
-
       <!-- Menu de droite -->
-      <div class="right-cta-menu text-right d-flex align-items-center col-6">
-        {% if not statut %}          
-        <div class="ml-auto">
-          <a href="{{ path('connexion.abonne') }}" class="btn btn-primary border-width-2 d-none d-lg-inline-block">
-            <span class="mr-2 icon-lock_outline"></span>S'identifier
-          </a>
-        </div>
-        {% endif %}
+      <div class="right-cta-menu text-right d-flex align-items-center col-auto ml-auto">
         <!-- Bouton mobile -->
         <button class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3" aria-label="Ouvrir le menu">
           <span class="icon-menu h3 m-0 p-0 mt-2"></span>

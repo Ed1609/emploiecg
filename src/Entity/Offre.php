@@ -39,8 +39,8 @@ class Offre
     #[ORM\Column]
     private ?\DateTimeImmutable $date_expiration_at = null;
 
-    #[ORM\Column(type: Types::BINARY)]
-    private $statut_offre = null;
+    #[ORM\Column(length: 5)]
+    private ?string $statut_offre = null;
 
     #[ORM\Column(length: 100)]
     private ?string $slug = null;

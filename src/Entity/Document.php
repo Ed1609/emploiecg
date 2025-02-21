@@ -19,6 +19,9 @@ class Document
     #[ORM\Column(length: 255)]
     private ?string $filePath = null;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $type = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class Document
     public function setFilePath(string $filePath): static
     {
         $this->filePath = $filePath;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

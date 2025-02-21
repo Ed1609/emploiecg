@@ -16,6 +16,10 @@ services:
         bind:
             $security: '@security.helper' # Injection de dépendances spécifiques
 
+    App\EventSubscriber\OffreSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber }  
+            
     # Déclaration explicite de votre extension Twig
     App\Twig\AppExtension:
         tags: ['twig.extension']

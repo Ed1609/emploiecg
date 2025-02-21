@@ -47,13 +47,13 @@
             <div class="d-flex align-items-center">
               <div class="border p-2 d-inline-block mr-3 rounded">
               {% if statut %}
-                <img src="{{ asset('uploads/images/' ~ job.entreprise.logo) }}" alt="Image">
+                <img src="{{ asset('uploads/images/' ~ job.entreprise.logo) }}" alt="logo" class="img-fluid" style="max-height: 50px;">
               {% else %}
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" class="img-fluid" style="max-height: 50px;">
               {% endif %}
               </div>
               <div>
-                <h2>{{ job.titre }}</h2>
+                <h2>{{ job.titre }}</h2> 
                 <div>
                 {% if statut %}
                   <span class="ml-0 mr-2 mb-2"><span class="icon-briefcase mr-2"></span>{{ job.entreprise.libele }}</span>
@@ -70,7 +70,7 @@
             <div class="row">
               <div class="col-6">
               {% if statut %}
-                <a href="{{ job.lienEmployeur }}" class="btn btn-block btn-primary btn-md">Postuler</a>
+                <a href={{ job.lienEmployeur }} class="btn btn-block btn-primary btn-md" target="_blank" rel="noopener noreferrer">Postuler</a>
                 {% else %}
                 <a href="{{ path('connexion.abonne') }}" class="btn btn-block btn-primary btn-md">Postuler</a>
               {% endif %}

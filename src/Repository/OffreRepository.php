@@ -18,9 +18,43 @@ class OffreRepository extends ServiceEntityRepository
 
     public function afficherOffres(int $limit, int $offset): array
     {
+        $aujourdhui = new \DateTimeImmutable();
+        $offset = max(0, $offset);
+        // Récupérer les offres actives avec pagination
+        $result = $this->createQueryBuilder('o')
+        ->where('o.statut_offre = :statut')
+        ->setParameter('statut', 0)
+        ->orderBy('o.date_mise_en_ligne_at', 'DESC')
+        ->setMaxResults($limit)
+        ->setFirstResult($offset)
+        ->getQuery()
+        ->getResult();
+
+        // Vérifier les dates d'expiration et mettre à jour le statut
+        foreach ($result as $offre) {
+            if ($offre->getDateExpirationAt() < $aujourdhui) {
+                $offre->setStatutOffre(1);
+                $this->getEntityManager()->persist($offre); // Marquer l'entité pour la mise à jour
+            }
+        }
+
+         $this->getEntityManager()->flush();  // Appliquer les mises à jour
+
         return $this->createQueryBuilder('o')
-            ->where('o.statut_offre = :statut')
-            ->setParameter('statut', 0)
+        ->where('o.statut_offre = :statut')
+        ->setParameter('statut', 0)
+        ->orderBy('o.date_mise_en_ligne_at', 'DESC')
+        ->setMaxResults($limit)
+        ->setFirstResult($offset)
+        ->getQuery()
+        ->getResult();
+    }
+
+    public function afficherOffresAdmin(int $limit, int $offset): array
+    {
+        $offset = max(0, $offset);
+        
+        return $this->createQueryBuilder('o')
             ->orderBy('o.date_mise_en_ligne_at', 'DESC')
             ->setMaxResults($limit)
             ->setFirstResult($offset)
@@ -46,21 +80,14 @@ class OffreRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    public function afficherOffresAdmin()
-    {
-        return $this->createQueryBuilder('o')
-            ->orderBy('o.date_mise_en_ligne_at', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
-
     
 
     public function countAllProducts(): int
     {
         return $this->createQueryBuilder('o')
             ->select('COUNT(o.id)')
+            ->where('o.statut_offre = :statut')
+            ->setParameter('statut', 0)
             ->getQuery()
             ->getSingleScalarResult();
     }
@@ -72,6 +99,14 @@ class OffreRepository extends ServiceEntityRepository
             ->setParameter('title', '%'.$title.'%')
             ->getQuery()
             ->getResult();
+    }
+
+    public function countAllProductsAdmin(): int
+    {
+        return $this->createQueryBuilder('o')
+            ->select('COUNT(o.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
 }

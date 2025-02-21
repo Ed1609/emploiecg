@@ -1,8 +1,7 @@
-{% extends 'base.html.twig' %}
+{% extends 'basesecond.html.twig' %}
 
 {% block body %}
-    <h1>Liste des Abonnés</h1>
-    <table class="table table-striped mt-4">
+<div class="container">
     {% for type, messages in app.flashes %}
         <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
             {% for message in messages %}
@@ -11,6 +10,9 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% endfor %}
+    <h1>Liste des Abonnés</h1>
+    <table class="table table-striped mt-4">
+
         <thead>
             <tr>
                 <th>ID</th>
@@ -30,7 +32,7 @@
                     <td>{{ abonne.specialite }}</td>
                     <td>{{ abonne.createAt|date('d-m-Y H:i') }}</td>
                     <td>
-                        <a href="{{ path('Abonne_delete', {id: abonne.id}) }}" 
+                        <a href="{{ path('adminSupprime_Abonne', {id: abonne.id}) }}" 
                            class="btn btn-danger btn-sm"
                            onclick="return confirm('Voulez-vous vraiment supprimer cet abonné ?')">
                             Supprimer
@@ -44,6 +46,32 @@
             {% endfor %}
         </tbody>
     </table>
+        <div class="row pagination-wrap">
+          <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
+            <span>Voir {{ (premiereEntree + 1) }}-{{ (premiereEntree + abonnes|length) }} Abonnés de la {{ total }} Plateforme </span>
+          </div>
+          <div class="col-md-6 text-center text-md-right">
+            <div class="custom-pagination ml-auto">
+              {% if pageActuelle > 1 %}
+                <a href="{{ path('abonne_list', {'page': pageActuelle - 1, 'AbonneParPage': AbonneParPage}) }}" class="prev">Prev</a>
+              {% endif %}
 
-    <a href="{{ path('abonne_new') }}" class="btn btn-primary mt-3">Ajouter un Abonné</a>
+              <div class="d-inline-block">
+                {% for i in 1..nombreDePages %}
+                  <a href="{{ path('abonne_list', {'page': i, 'AbonneParPage': AbonneParPage}) }}" 
+                     class="{% if i == pageActuelle %}active{% endif %} px-3 py-1 border bg-primary text-white">
+                    {{ i }}
+                  </a>
+                {% endfor %}
+              </div>
+
+              {% if pageActuelle < nombreDePages %}
+                <a href="{{ path('abonne_list', {'page': pageActuelle + 1, 'AbonneParPage': AbonneParPage}) }}" class="next">Next</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+    <a href="{{ path('AdminAbonne_New') }}" class="btn btn-primary mt-3">Ajouter un Abonné</a>
+
+</div>
 {% endblock %}

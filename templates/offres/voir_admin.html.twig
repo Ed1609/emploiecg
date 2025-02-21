@@ -1,60 +1,79 @@
-{% extends 'base.html.twig' %}
+{% extends 'basesecond.html.twig' %}
 
-{% block title %}Hello OffresController!{% endblock %}
+{% block title %}Offres{% endblock %}
 
 {% block body %}
+    <div class="container align-items-center">
+        <h1 class="text-center mb-4">Liste des offres</h1>
 
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+        {# Affichage des messages flash #}
+        {% for type, messages in app.flashes %}
+            <div class="alert alert-{{ type == 'success' ? 'success' : (type == 'error' ? 'danger' : 'info') }} alert-dismissible fade show text-center" role="alert">
+                {% for message in messages %}
+                    {{ message|raw }}
+                {% endfor %}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
 
-<div class="example-wrapper">
+        <div class="row">
+            {% for item in offres %}
+                <div class="col-md-4 mb-4 d-flex justify-content-center">
+                    <div class="card shadow-sm" style="width: 100%;">
+                        <div class="card-body text-start">
+                            <h5 class="card-title">{{ item.titre }}</h5>
+                            <p><strong>Secteur :</strong> {{ item.secteur }}</p>
+                            <p><strong>Description :</strong> {{ item.description|nl2br }}</p>
+                            <p><strong>Lieu :</strong> {{ item.lieu }}</p>
+                            <p><strong>Slug :</strong> {{ item.slug }}</p>
+                            <p><strong>Date mise en ligne :</strong> {{ item.dateMiseEnLigneAt|date('d-m-Y H:i') }}</p>
+                            <p><strong>Date expiration :</strong> {{ item.dateExpirationAt|date('d-m-Y H:i') }}</p>
+                            <p><strong>Type contrat :</strong> {{ item.typeContrat }}</p>
+                            <p><strong>Entreprise :</strong> {{ item.entreprise.libele }}</p>
 
-    {% for type, messages in app.flashes %}
-        <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
-            {% for message in messages %}
-                {{ message }}
-            {% endfor %}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endfor %}
+                            <p><strong>Statut Offre :</strong>
+                                {% if item.statutOffre == 0 %}
+                                    <span class="badge bg-primary">Active</span>
+                                    <a href="{{ path('changerStatut', {'statut':1,'id': item.id}) }}" class="badge bg-danger">désactiver</a>
 
-    {% for item in offres %}
-    
-        <p>Titre :{{item.titre}}</p>
-        </br>
-        <p>Secteur : {{item.secteur}}</p>
-        </br>
-        <p>Description: {{item.description}}</p>
-        </br>
-        <p>Lieu: {{item.lieu}}</p>
-        </br>
-        <p>Slug: {{ item.slug }}</p>
-        <p>Date: {{ item.dateMiseEnLigneAt|date('d-m-Y H:i') }}</p>
-        <p>Statut Offre: 
-            {% if item.statutOffre == 0 %}
-                <span class="badge bg-success">Active</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Inactive</span>
+                                    <a href="{{ path('changerStatut', {'statut':0,'id': item.id}) }}" class="badge bg-primary">Réactiver</a>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>                                               
             {% else %}
-                <span class="badge bg-danger">Inactive</span>
-            {% endif %}
-        </p>
-        </br>
-        <p>Type contrat: {{item.typeContrat}}</p>
-        </br>
-        <p>Id: {{item.id}}</p>
-        </br>
-        <p>Entreprise: {{item.entreprise.libele}}</p>
-        
-        
-    {% endfor %}
+                <p class="text-center">Aucune offre disponible.</p>
+            {% endfor %}
+        </div>
 
-<div class="example-wrapper">
+        <div class="row pagination-wrap">
+          <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
+            <span>Voir {{ (premiereEntree + 1) }}-{{ (premiereEntree + offres|length) }} des offres {{ total }} d'emploi</span>
+          </div>
+          <div class="col-md-6 text-center text-md-right">
+            <div class="custom-pagination ml-auto">
+              {% if pageActuelle > 1 %}
+                <a href="{{ path('admin-voir.offre', {'page': pageActuelle - 1, 'offresParPage': produitsParPage}) }}" class="prev">Prev</a>
+              {% endif %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/home/ghost/Documents/Documents/Projet/TiteMondo/emploiecg/src/Controller/OffresController.php</code></li>
-        <li>Your template at <code>/home/ghost/Documents/Documents/Projet/TiteMondo/emploiecg/templates/offres/index.html.twig</code></li>
-    </ul>
-</div>
+              <div class="d-inline-block">
+                {% for i in 1..nombreDePages %}
+                  <a href="{{ path('admin-voir.offre', {'page': i, 'offresParPage': produitsParPage}) }}" 
+                     class="{% if i == pageActuelle %}active{% endif %}">
+                    {{ i }}
+                  </a>
+                {% endfor %}
+              </div>
+
+              {% if pageActuelle < nombreDePages %}
+                <a href="{{ path('admin-voir.offre', {'page': pageActuelle + 1, 'offresParPage': produitsParPage}) }}" class="next">Next</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+     <a href="{{ path('creer-offre') }}" class="btn btn-primary mt-3">Ajouter une offre</a>
+    </div>
 {% endblock %}

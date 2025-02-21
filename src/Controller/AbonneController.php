@@ -81,8 +81,8 @@ class AbonneController extends AbstractController
             }
         }
 
-        $this->addFlash('warning', 'Identifiez-vous !');
-        return $this->redirectToRoute('connexion.abonne');
+        $this->addFlash('warning', 'Inscrivez-vous !');
+        return $this->redirectToRoute('app_home');
     }
     
 

@@ -11,29 +11,56 @@ use App\Repository\AbonneRepository;
 use App\Entity\Blacklist;
 use App\Repository\BlacklistRepository;
 use App\Repository\OffreRepository;
+use App\Entity\Offre;
 use App\Repository\EntrepriseRepository;
 use App\Entity\Entreprise;
 use App\Service\BlacklistService;
 use App\Service\SmsService;
 use App\Entity\Abonne;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+
+
 
 class AdminController extends AbstractController
 {
     #[Route('/admin', name: 'app_admin')]
-    public function index(): Response
+    public function index(AbonneRepository $abonneRepository,EntrepriseRepository $entrepriseRepository,OffreRepository $offreRepository): Response
     {
+        $NombreAbonne = $abonneRepository->countAllAbonnes();
+        $NombreEnterprise =  $entrepriseRepository->countAllEnterprises();
+        $offres = $offreRepository->countAllProductsAdmin();
+        
         return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
+            'Abonnes' => $NombreAbonne,
+            'entreprises'=>$NombreEnterprise,
+            'offres'=>$offres,
         ]);
     }
 
-    #[Route('/abonne/liùst', name: 'abonne_list')]
-    public function AjouterAbonne(AbonneRepository $abonneRepository): Response
+    #[Route('/abonne/list', name: 'abonne_list')]
+    public function AjouterAbonne(AbonneRepository $abonneRepository, RequestStack $requestStack, Request $request): Response
     {
-        $abonnes = $abonneRepository->findAll();
+        //$abonnes = $abonneRepository->findAll();
+        $AbonneParPage = $request->query->getInt('AbonneParPage', 10);
+        $pageActuelle = max($request->query->getInt('page', 1), 1);
+
+        $total = $abonneRepository->countAllAbonnes();
+        $nombreDePages = ceil($total / $AbonneParPage);
+
+        $pageActuelle = min($pageActuelle, $nombreDePages);
+        $premiereEntree = ($pageActuelle - 1) * $AbonneParPage;
+
+        $abonnes = $abonneRepository->afficherAbonnes($AbonneParPage, $premiereEntree);
+
+
         return $this->render('abonne/index.html.twig', [
             'abonnes' => $abonnes,
+            'nombreDePages' => $nombreDePages,
+            'premiereEntree' => $premiereEntree,                
+            'pageActuelle' => $pageActuelle,
+            'AbonneParPage' => $AbonneParPage,
+            'total'=>$total,
         ]);
     }
 
@@ -68,8 +95,10 @@ class AdminController extends AbstractController
 
 
     #[Route('/Admin/Abnne/nouveau', name: 'AdminAbonne_New')]
-    public function newForAdmin(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
+    public function newForAdmin(Request $request,BlacklistService $blacklistService,SmsService $smsService, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
     {
+        $cout = 250;
+
         if ($request->isMethod('POST')) {
             $msisdn = $request->request->get('msisdn');
     
@@ -90,25 +119,69 @@ class AdminController extends AbstractController
             $abonne->setTentativeconnexion(0);
             $abonne->setPassword($passwordHasher->hashPassword($abonne, $request->request->get('password')));
             $abonne->setCreateAt(new \DateTimeImmutable());
-    
+            $abonne->setModePaiement($request->request->get('mode_debit'));
+            $modePaiement = $request->request->get('mode_debit');
+
+            $blacklistService->deleteByMsisdn($msisdn);
+            
             $em->persist($abonne);
             $em->flush();
     
-            $this->addFlash('success', 'Abonné ajouté avec succès.');
-            return $this->redirectToRoute('abonne_list');
+            // 📲 Envoi de SMS de bienvenue
+            if($modePaiement = 'AM')
+            {
+                $message = "Bienvenue sur notre plateforme d'alerte emploi, le coût de souscription est de {$cout} Frs par AM.";
 
+            }else{
+                $message="Bienvenue sur notre plateforme d'alerte emploi, le coût de souscription est de {$cout} Frs par credit.";
+            }
+            
+            $smsService->sendSms($msisdn, '', $message);
+            
+            //$success= $this->$sms->sendSms($msisdn,'',$message); // Correct method call
+            $smsService->sendSms($msisdn,'',$message);
+
+            if($abonne->getRoles()==['ROLE_ADMIN'])
+            {
+                $this->addFlash('success', 'Abonné ajouté avec succès.');
+                return $this->redirectToRoute('abonne_list');
+            }else
+            {
+                $url = $this->generateUrl('connexion.abonne'); // Génère l'URL pour la route 'connexion.abonne'
+
+                $this->addFlash('success', 'Abonné ajouté avec succès');
+                return $this->redirectToRoute('AdminAbonne_New');
+            }
         }
     
         return $this->render('abonne/new.html.twig');
     }
 
     #[Route('admin/voir/offre', name: 'admin-voir.offre')]
-    public function AffichageAdmin(OffreRepository $offreRepository): Response
+    public function AffichageAdmin(OffreRepository $offreRepository, Request $request): Response
     {
-        $offres = $offreRepository->findAll();
+        $produitsParPage = $request->query->getInt('offresParPage', 10);
+        $pageActuelle = max($request->query->getInt('page', 1), 1);
+
+        $total = $offreRepository->countAllProductsAdmin();
+        
+        $nombreDePages = ceil($total / $produitsParPage);
+
+        $pageActuelle = min($pageActuelle, $nombreDePages);
+        $premiereEntree = ($pageActuelle - 1) * $produitsParPage;
+
+        $offres = $offreRepository->afficherOffresAdmin($produitsParPage, $premiereEntree);
+        $Offrestotal = $offreRepository->countAllProductsAdmin();
+        
+        //dd($offres);
 
         return $this->render('offres/voir_admin.html.twig', [
             'offres' => $offres,
+            'nombreDePages' => $nombreDePages,
+            'premiereEntree' => $premiereEntree,                
+            'pageActuelle' => $pageActuelle,
+            'produitsParPage' => $produitsParPage,
+            'total' => $Offrestotal,
         ]);
     }
 
@@ -129,4 +202,63 @@ class AdminController extends AbstractController
     {
         return $this->render('admin/parametres.html.twig');
     }
+
+    #[Route('admin/entreprise/ajouter', name: 'ajouter-entreprise')]
+    public function creerEntreprise(EntrepriseRepository $entrepriseRepository): Response
+    {
+        $entreprises = $entrepriseRepository->afficherEntrepriseAdmin();
+
+        return $this->render('formulaire/new_entreprise.html.twig', [
+            'entreprises' => $entreprises,
+        ]);
+    }
+
+    #[Route('admin/entreprise/{id}/supprime', name: 'adminSupprime_entreprise')]
+    public function deleteenterprise(int $id,EntrepriseRepository $entrepriseRepository,BlacklistRepository $blacklistRepository,EntityManagerInterface $em): Response 
+    {
+        $entreprise = $entrepriseRepository->find($id);
+
+        if (!$entreprise) {
+            $this->addFlash('error', 'entreprise introuvable.');
+            return $this->redirectToRoute('abonne_list');
+        }
+
+        // Supprimer de la table Abonne
+        $em->remove($entreprise);
+        $em->flush();
+
+        $this->addFlash('success', 'Entreprise supprimée avec succès.');
+
+        return $this->redirectToRoute('entreprise_list');
+    }
+
+    #[Route('admin/changer-statut/{statut}-{id}', name:'changerStatut', requirements:['id'=>'\d+'])]
+    public function changerStatut(int $id, int $statut, OffreRepository $offreRepository, EntityManagerInterface $em)
+    {
+        $offre = $offreRepository->find($id);
+
+        if ($offre) {
+
+            $offre->setStatutOffre($statut);
+            
+            if ($statut == 0) {
+                // Ajout de 7 jours à la date de mise en ligne
+                if($offre->getDateExpirationAt() < new \DateTimeImmutable())
+                {
+                    $dateExpiration = clone $offre->getDateMiseEnLigneAt();
+                    $dateExpiration->modify('+7 days');
+                    $offre->setDateExpirationAt($dateExpiration);                   
+                }
+            }
+    
+            $em->flush();
+    
+            $this->addFlash('success', 'Le statut a été changé avec succès.');
+            return $this->redirectToRoute('admin-voir.offre');
+        }
+    
+        $this->addFlash('error', 'Une erreur est survenue.');
+        return $this->redirectToRoute('app_home');
+    }
+
 }

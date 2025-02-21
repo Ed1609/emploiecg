@@ -65,7 +65,7 @@ function createJobListItem(item) {
     listItem.classList.add('job-listing', 'd-block', 'd-sm-flex', 'pb-3', 'pb-sm-0', 'align-items-center');
 
     const link = document.createElement('a');
-    link.href = `/offres/${item.slug}/${item.id}`; // Construct the URL dynamically
+    link.href = `/offres/${item.slug}-${item.id}`; // Construct the URL dynamically
 
     const logoDiv = document.createElement('div');
     logoDiv.classList.add('job-listing-logo');
