@@ -39,4 +39,32 @@ class AbonneRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getAbonneStats(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "
+            SELECT ville, COUNT(id) as total 
+            FROM abonne 
+            GROUP BY ville
+            ORDER BY total DESC
+        ";
+
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery()->fetchAllAssociative();
+
+        // Nombre total d'abonnés
+        $totalAbonnes = array_sum(array_column($resultSet, 'total'));
+
+        // Calcul du poids de chaque ville
+        foreach ($resultSet as &$row) {
+            $row['pourcentage'] = ($totalAbonnes > 0) ? round(($row['total'] / $totalAbonnes) * 100, 2) : 0;
+        }
+
+        return [
+            'total_abonnes' => $totalAbonnes,
+            'stats_par_ville' => $resultSet
+        ];
+    }
 }

@@ -401,11 +401,17 @@
   .sticky-wrapper .shrink {
     padding-top: 10px !important;
     padding-bottom: 10px !important; }
+  
+    .container {
+      max-width: 100%;
+      overflow: hidden;
+  }
 
 body {
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.7;
+  overflow-x: hidden;
   position: relative; }
   body:after {
     content: "";

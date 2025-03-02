@@ -177,5 +177,26 @@
 
 
 {% block javascripts %}
-    <!-- Scripts here -->
+        <!-- Core Scripts -->
+    <script src="{{ asset('js/core/jquery-3.7.1.min.js') }}" defer></script>
+    <script src="{{ asset('js/core/popper.min.js') }}" defer></script>
+    <script src="{{ asset('js/core/bootstrap.min.js') }}" defer></script>
+
+    <!-- Plugins -->
+    <script src="{{ asset('js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/chart.js/chart.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/jquery.sparkline/jquery.sparkline.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/chart-circle/circles.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/datatables/datatables.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/jsvectormap/jsvectormap.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/jsvectormap/world.js') }}" defer></script>
+
+    <!-- Main JS -->
+    <script src="{{ asset('js/kaiadmin.min.js') }}" defer></script>
+
+    <!-- Demo Scripts (à supprimer en production) -->
+    <script src="{{ asset('js/setting-demo.js') }}" defer></script>
+    <script src="{{ asset('js/demo.js') }}" defer></script>
+
 {% endblock %}

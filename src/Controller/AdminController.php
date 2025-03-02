@@ -30,11 +30,14 @@ class AdminController extends AbstractController
         $NombreAbonne = $abonneRepository->countAllAbonnes();
         $NombreEnterprise =  $entrepriseRepository->countAllEnterprises();
         $offres = $offreRepository->countAllProductsAdmin();
+        $stats = $abonneRepository->getAbonneStats();
         
         return $this->render('admin/index.html.twig', [
             'Abonnes' => $NombreAbonne,
             'entreprises'=>$NombreEnterprise,
             'offres'=>$offres,
+            'total_abonnes' => $stats['total_abonnes'],
+            'stats_par_ville' => $stats['stats_par_ville']            
         ]);
     }
 

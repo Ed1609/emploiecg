@@ -173,37 +173,7 @@ const modalShowcase = `
 // });
 
 
-// Cicle Chart
-Circles.create({
-	id:           'task-complete',
-	radius:       50,
-	value:        80,
-	maxValue:     100,
-	width:        5,
-	text:         function(value){return value + '%';},
-	colors:       ['#36a3f7', '#fff'],
-	duration:     400,
-	wrpClass:     'circles-wrp',
-	textClass:    'circles-text',
-	styleWrapper: true,
-	styleText:    true
-})
 
-//Notify
-$.notify({
-	icon: 'icon-bell',
-	title: 'Kaiadmin',
-	message: 'Premium Bootstrap 5 Admin Dashboard',
-},{
-	type: 'secondary',
-	placement: {
-		from: "bottom",
-		align: "right"
-	},
-	time: 1000,
-});
-
-// Jsvectormap
 var world_map = new jsVectorMap({
 	selector: "#world-map",
 	map: "world",
@@ -215,49 +185,49 @@ var world_map = new jsVectorMap({
 	},
 	markers: [
 		{
-			name: 'Indonesia',
-			coords: [-6.229728, 106.6894311],
+			name: 'Brazzaville',
+			coords: [-4.2634, 15.2429],
 			style: {
 				fill: '#435ebe'
 			}
 		},
 		{
-			name: 'United States',
-			coords: [38.8936708, -77.1546604],
+			name: 'Pointe-Noire',
+			coords: [-4.7699, 11.8664],
 			style: {
 				fill: '#28ab55'
 			}
 		},
 		{
-			name: 'Russia',
-			coords: [55.5807481, 36.825129],
+			name: 'Dolisie',
+			coords: [-4.1981, 12.6666],
 			style: {
 				fill: '#f3616d'
 			}
 		},
 		{
-			name: 'China',
-			coords: [39.9385466, 116.1172735]
+			name: 'Nkayi',
+			coords: [-4.1775, 13.2844]
 		},
 		{
-			name: 'United Kingdom',
-			coords: [51.5285582, -0.2416812]
+			name: 'Ouesso',
+			coords: [1.6136, 16.0517]
 		},
 		{
-			name: 'India',
-			coords: [26.8851417, 75.6504721]
+			name: 'Impfondo',
+			coords: [1.6184, 18.0598]
 		},
 		{
-			name: 'Australia',
-			coords: [-35.2813046, 149.124822]
+			name: 'Madingou',
+			coords: [-4.1566, 13.55]
 		},
 		{
-			name: 'Brazil',
-			coords: [-22.9140693, -43.5860681]
+			name: 'Sibiti',
+			coords: [-3.6854, 13.349]
 		},
 		{
-			name: 'Egypt',
-			coords: [26.834955, 26.3823725]
+			name: 'Mossendjo',
+			coords: [-2.9497, 12.7046]
 		},
 	],
 	onRegionTooltipShow(event, tooltip) {
@@ -265,7 +235,8 @@ var world_map = new jsVectorMap({
 	}
 });
 
-//Chart
+
+//
 
 var ctx = document.getElementById('statisticsChart').getContext('2d');
 

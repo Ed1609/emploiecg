@@ -111,7 +111,7 @@
                       </div>
                       <div class="col col-stats ms-3 ms-sm-0">
                         <div class="numbers">
-                          <p class="card-category">Subscribers</p>
+                          <p class="card-category">Publicités activées</p>
                           <h4 class="card-title">1303</h4>
                         </div>
                       </div>
@@ -126,7 +126,7 @@
                 <div class="card card-round">
                   <div class="card-header">
                     <div class="card-head-row card-tools-still-right">
-                      <h4 class="card-title">Users Geolocation</h4>
+                      <h4 class="card-title">Localisation des utilisateurs</h4>
                       <div class="card-tools">
                         <button
                           class="btn btn-icon btn-link btn-primary btn-xs"
@@ -146,7 +146,7 @@
                       </div>
                     </div>
                     <p class="card-category">
-                      Map of the distribution of users around the world
+                      Utilisateurs dans le pays
                     </p>
                   </div>
                   <div class="card-body">
@@ -155,35 +155,21 @@
                         <div class="table-responsive table-hover table-sales">
                           <table class="table">
                             <tbody>
-
+                            {% for stat in stats_par_ville %}
                               <tr>
                                 <td>
                                   <div class="flag">
                                     <img
-                                      src="assets/img/flags/id.png"
-                                      alt="indonesia"
+                                      src="https://upload.wikimedia.org/wikipedia/commons/9/92/Flag_of_the_Republic_of_the_Congo.svg"
+                                      alt="R.Congo" class="img-fluid" style="max-height: 25px;"
                                     />
                                   </div>
                                 </td>
-                                <td>Indonesia</td>
-                                <td class="text-end">2.320</td>
-                                <td class="text-end">42.18%</td>
+                                <td>{{ stat.ville }}</td>
+                                <td class="text-end">{{ stat.total }}</td>
+                                <td class="text-end">{{ stat.pourcentage }}%</td>
                               </tr>
-
-                              <tr>
-                                <td>
-                                  <div class="flag">
-                                    <img
-                                      src="assets/img/flags/id.png"
-                                      alt="indonesia"
-                                    />
-                                  </div>
-                                </td>
-                                <td>Indonesia</td>
-                                <td class="text-end">2.320</td>
-                                <td class="text-end">42.18%</td>
-                              </tr>
-
+                            {% endfor %}
 
                             </tbody>
                           </table>
@@ -223,7 +209,6 @@
     <script src="{{ asset('js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}" defer></script>
     <script src="{{ asset('js/plugin/jsvectormap/jsvectormap.min.js') }}" defer></script>
     <script src="{{ asset('js/plugin/jsvectormap/world.js') }}" defer></script>
-    <script src="{{ asset('js/plugin/sweetalert/sweetalert.min.js') }}" defer></script>
 
     <!-- Main JS -->
     <script src="{{ asset('js/kaiadmin.min.js') }}" defer></script>
