@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: BlacklistRepository::class)]
-#[Broadcast]
+//#[Broadcast]
 class Blacklist
 {
     #[ORM\Id]

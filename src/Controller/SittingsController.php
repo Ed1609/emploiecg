@@ -9,12 +9,13 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Form\SettingsType;
 use App\Entity\Settings;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\FormError;
 
 class SittingsController extends AbstractController
 {
     #[Route('admin/parametre', name: 'parametres')]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager,#[Autowire('%uploads_directory%')] string $uploads_directory): Response
     {
         $settings = new Settings();
         $form = $this->createForm(SettingsType::class, $settings);
@@ -27,22 +28,28 @@ class SittingsController extends AbstractController
                 $logoEnteteFile = $form->get('logoEntete')->getData();
                 if ($logoEnteteFile) {
                     $logoEnteteFileName = uniqid().'.'.$logoEnteteFile->guessExtension();
-                    $logoEnteteFile->move($this->getParameter('images_directory'), $logoEnteteFileName);
+                    $logoEnteteFile->move($uploads_directory, $logoEnteteFileName);
                     $settings->setLogoEntete($logoEnteteFileName);
                 }
 
                 $logoNavBarFile = $form->get('logoNavBar')->getData();
                 if ($logoNavBarFile) {
                     $logoNavBarFileName = uniqid().'.'.$logoNavBarFile->guessExtension();
-                    $logoNavBarFile->move($this->getParameter('images_directory'), $logoNavBarFileName);
+                    $logoNavBarFile->move($uploads_directory, $logoNavBarFileName);
                     $settings->setLogoNavBar($logoNavBarFileName);
                 }
 
                 $imageAccueilFile = $form->get('imageAccueil')->getData();
                 if ($imageAccueilFile) {
                     $imageAccueilFileName = uniqid().'.'.$imageAccueilFile->guessExtension();
-                    $imageAccueilFile->move($this->getParameter('images_directory'), $imageAccueilFileName);
+                    $imageAccueilFile->move($uploads_directory, $imageAccueilFileName);
                     $settings->setImageAccueil($imageAccueilFileName);
+                }
+
+                if (!$imageAccueilFile) {
+                    $errorMessage = 'Ajoutez une image d\'accueil';
+                    $this->addFlash('error', $errorMessage);
+                    return $this->redirectToRoute('parametres'); // Redirect to a specific route after displaying the error
                 }
 
                 // Sauvegarde des paramètres

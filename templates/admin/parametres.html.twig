@@ -15,19 +15,20 @@
 {% endblock %}
 
 {% block body %}
-<div class="container mt-5 p-4 border rounded shadow bg-white d-flex flex-column align-items-center">
-<div class="row gx-3">
-        <h1 class="text-center mb-4">Paramètres de la plateforme</h1>
-    {% for type, messages in app.flashes %}
-        <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
-            {% for message in messages %}
-                {{ message|raw }}
-            {% endfor %}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endfor %}
-
+<div class="container">
+<div class="container mt-5 p-4 border rounded shadow bg-white">
+<div class="row gx-5">
     {{ form_start(form) }}
+
+    <h1 class="text-center mb-4">Paramètres de la plateforme</h1>
+        {% for type, messages in app.flashes %}
+            <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
+                {% for message in messages %}
+                    {{ message|raw }}
+                {% endfor %}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
 
     <div class="row">
         <div class="col-md-6">
@@ -387,6 +388,7 @@
         {{ form_end(form) }}
 </div>
 <div>
+</div>
 {% endblock %}
 
 {% block javascripts %}

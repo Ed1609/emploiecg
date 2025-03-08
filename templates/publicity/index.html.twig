@@ -1,0 +1,49 @@
+{% extends 'basesecond.html.twig' %}
+
+{% block body %}
+    <div class="container">
+    <div class="container mt-5 p-4 border rounded shadow bg-white">
+        <h2 class="mb-4">Ajouter une publicité</h2>
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    {{ form_label(form.imagePub, 'Image de la publicité', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.imagePub, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.imagePub) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.lienOrientation, 'Lien d\'orientation', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.lienOrientation, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.lienOrientation) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.libele, 'Libellé', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.libele, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.libele) }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    {{ form_label(form.demandeur, 'Demandeur', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.demandeur, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.demandeur) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.contact, 'Contact', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.contact, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.contact) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.textPub, 'Texte de la publicité', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.textPub, {'attr': {'class': 'form-control', 'rows': '4'}}) }}
+                    {{ form_errors(form.textPub) }}
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Soumettre</button>
+        {{ form_end(form) }}
+        </div>
+    </div>
+    </div>
+{% endblock %}
