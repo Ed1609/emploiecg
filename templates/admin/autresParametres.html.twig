@@ -1,0 +1,102 @@
+{% extends "basesecond.html.twig" %}
+
+{% block title %}Autre-Parametres{% endblock %}
+
+{% block stylesheets %}
+        <link rel="shortcut icon" href="{{ asset('images/ftco-32x32.png') }}">
+        {# CSS principaux #}
+        <link rel="stylesheet" href="{{ asset('css/custom-bs.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/jquery.fancybox.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/bootstrap-select.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('fonts/icomoon/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('fonts/line-icons/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/animate.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+{% endblock %}
+
+{% block body %}
+
+        <div class="container">
+          <div class="page-inner">
+            <div
+              class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+              <div class="ms-md-auto py-2 py-md-0">
+                <a href="{{path('ajouter-entreprise')}}" class="btn btn-primary btn-round">Ajouter une entreprise</a>
+                <a href="{{ path('AdminAbonne_New') }}" class="btn btn-label-info btn-round me-2">Ajouter un Abonne</a>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-icon">
+                        <div class="icon-big text-center icon-primary bubble-shadow-small">
+                        <a href ="{{path('parametres-vue-ville')}}">
+                        <i class="bi bi-buildings"></i>
+                        </a>
+                        </div>
+                      </div>
+                      <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                          <p class="card-title">Villes</p>
+                          <h4 class="card-category">Voir-Ajouter-supprimer</h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-icon">
+                        <div class="icon-big text-center icon-success bubble-shadow-small">
+                        <a href="{{path('parametres-vue-mettier')}}">
+                        <i class="bi bi-person-workspace"></i>
+                        </a>
+                        </div>
+                      </div>
+                      <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                          <h4 class="card-title">Metiers</h4>
+                          <p class="card-category">Voir-Ajouter-supprimer</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    <!-- Core Scripts -->
+    <script src="{{ asset('js/core/jquery-3.7.1.min.js') }}" defer></script>
+    <script src="{{ asset('js/core/popper.min.js') }}" defer></script>
+    <script src="{{ asset('js/core/bootstrap.min.js') }}" defer></script>
+
+    <!-- Plugins -->
+    <script src="{{ asset('js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/chart.js/chart.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/jquery.sparkline/jquery.sparkline.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/chart-circle/circles.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/datatables/datatables.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/jsvectormap/jsvectormap.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/jsvectormap/world.js') }}" defer></script>
+
+    <!-- Main JS -->
+    <script src="{{ asset('js/kaiadmin.min.js') }}" defer></script>
+
+    <!-- Demo Scripts (à supprimer en production) -->
+    <script src="{{ asset('js/setting-demo.js') }}" defer></script>
+    <script src="{{ asset('js/demo.js') }}" defer></script>
+{% endblock %}
+

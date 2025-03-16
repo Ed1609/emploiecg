@@ -32,6 +32,21 @@ class Publicity
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $textPub = null;
 
+    #[ORM\Column]
+    private ?int $status = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $dateMiseEnLigneAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $dateExpirationAt = null;
+
+    public function __construct()
+    {
+
+        $this->dateMiseEnLigneAt = new \DateTimeImmutable('now');
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +120,42 @@ class Publicity
     public function setTextPub(?string $textPub): static
     {
         $this->textPub = $textPub;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getDateMiseEnLigneAt(): ?\DateTimeImmutable
+    {
+        return $this->dateMiseEnLigneAt;
+    }
+
+    public function setDateMiseEnLigneAt(\DateTimeImmutable $dateMiseEnLigneAt): static
+    {
+        $this->dateMiseEnLigneAt = $dateMiseEnLigneAt;
+
+        return $this;
+    }
+
+    public function getDateExpirationAt(): ?\DateTimeImmutable
+    {
+        return $this->dateExpirationAt;
+    }
+
+    public function setDateExpirationAt(\DateTimeImmutable $dateExpirationAt): static
+    {
+        $this->dateExpirationAt = $dateExpirationAt;
 
         return $this;
     }

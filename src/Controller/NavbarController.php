@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\SettingsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -11,8 +12,10 @@ use Symfony\Component\Routing\Attribute\Route;
 class NavbarController extends AbstractController
 {
     #[Route('/navbar', name: 'app_navbar')]
-    public function index(RequestStack $requestStack,SessionInterface $session): Response
+    public function index(RequestStack $requestStack,SettingsRepository $settingsRepository,SessionInterface $session): Response
     {
+        $nomPlateforme = $_ENV['IDENTIFIANT_SITE'];;
+        $monSite = $settingsRepository->findByIdentifiant($nomPlateforme);        
         $session = $requestStack->getSession();
         $Abonne = $session->get('Abonne');
         $connected = false;
@@ -28,6 +31,7 @@ class NavbarController extends AbstractController
         return $this->render('_navbar.html.twig', [
             'statut'=>$connected,
             'idAbonne'=>$idUser,
+            'monSite'=>$monSite,
 
         ]);
     }

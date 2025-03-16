@@ -34,7 +34,11 @@
                 <!-- Titre -->
                 <div class="mb-3">
                     <label for="titre" class="form-label"><i class="bi bi-tag"></i> Titre :</label>
-                    <input type="text" class="form-control" id="titre" name="titre" placeholder="Entrez le titre de l'offre" required>
+                    <select class="form-control" maxlength="50" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" id="titre" name="titre" title="titre du poste ?" required>
+                        {% for Mettier in Mettiers %}
+                          <option value="{{Mettier.libele}}">{{Mettier.libele}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 
                 <!-- Secteur -->
@@ -56,14 +60,13 @@
     
                 <!-- Lieu -->
                 <div class="mb-3">
-                    <label for="lieu" class="form-label"><i class="bi bi-pin-map"></i> Lieu :</label>
-                    <select class="form-select" id="lieu" name="lieu" required>
-                        <option value="Brazzaville">Brazzaville</option>
-                        <option value="Pointe-Noire">Pointe-Noire</option>
-                        <option value="Dolisie">Dolisie</option>
+                    <label for="titre" class="form-label"><i class="bi bi-tag"></i> Lieu :</label>
+                    <select class="form-control" maxlength="50" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" id="lieu" name="lieu" title="Lieu de travail ?" required>
+                        {% for ville in villes %}
+                          <option value="{{ville.nomVille}}">{{ville.nomVille}}</option>
+                        {% endfor %}
                     </select>
                 </div>
-    
                 <!-- Description -->
                 <div class="mb-3">
                     <label for="description" class="form-label"><i class="bi bi-file-text"></i> Description :</label>

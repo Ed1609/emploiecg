@@ -24,7 +24,7 @@
             >
               <div>
                 <h3 class="fw-bold mb-3">Dashboard</h3>
-                <h6 class="op-7 mb-2">Free Bootstrap 5 Admin Dashboard</h6>
+                <h6 class="op-7 mb-2">Interface admin</h6>
               </div>
               <div class="ms-md-auto py-2 py-md-0">
                 <a href="{{path('ajouter-entreprise')}}" class="btn btn-primary btn-round">Ajouter une entreprise</a>
@@ -106,13 +106,13 @@
                       <div class="col-icon">
                         <div
                           class="icon-big text-center icon-info bubble-shadow-small">
-                          <i class="fas fa-user-check"></i>
+                          <a href="{{path('app_publicity')}}"><i class="fas fa-user-check"></i></a>
                         </div>
                       </div>
                       <div class="col col-stats ms-3 ms-sm-0">
                         <div class="numbers">
                           <p class="card-category">Publicités activées</p>
-                          <h4 class="card-title">1303</h4>
+                          <h4 class="card-title">{{publicity}}</h4>
                         </div>
                       </div>
                     </div>
@@ -156,7 +156,7 @@
                           <table class="table">
                             <tbody>
                             {% for stat in stats_par_ville %}
-                              <tr>
+                              <tr onclick="window.location.href='{{ path('Abo.ville', {'ville': stat.ville}) }}';" style="cursor: pointer;">
                                 <td>
                                   <div class="flag">
                                     <img

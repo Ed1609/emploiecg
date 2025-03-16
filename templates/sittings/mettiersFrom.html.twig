@@ -1,0 +1,36 @@
+{% extends 'basesecond.html.twig' %}
+
+{% block title %} Formulaire de mettier {% endblock %}
+
+{% block body %}
+    <div class="container">
+    <div class="form-control mt-4">
+        <h2 class="mb-4 text-center">Ajouter un mettier</h2>
+
+        {{ form_start(form) }}
+        {% for type, messages in app.flashes %}
+        <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
+            {% for message in messages %}
+                {{ message|raw }}
+            {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}        
+        <div class="mb-3">
+            {{ form_label(form.libele, 'Libelé du mettier') }}
+            {{ form_widget(form.libele, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.libele) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.description, 'Description du mettier') }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.description) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

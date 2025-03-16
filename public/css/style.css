@@ -401,17 +401,11 @@
   .sticky-wrapper .shrink {
     padding-top: 10px !important;
     padding-bottom: 10px !important; }
-  
-    .container {
-      max-width: 100%;
-      overflow: hidden;
-  }
 
 body {
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.7;
-  overflow-x: hidden;
   position: relative; }
   body:after {
     content: "";
@@ -594,7 +588,7 @@ h1, h2, h3, h4 {
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(50, 216, 251, 0.7);
+      background: #0b1d6e;
       z-index: 1; }
     .bg-image.overlay-blue > .container {
       position: relative;
@@ -923,9 +917,8 @@ h1, h2, h3, h4 {
 .btn.btn-primary {
   color: #fff; }
   .btn.btn-primary:hover {
-    background: rgba(50, 216, 251, 0.7); 
-    border-color: rgba(50, 216, 251, 0.7);
-  }
+    background: rgba(50, 216, 251, 0.7);
+    border-color: rgba(50, 216, 251, 0.7); }
 
 .btn.btn-outline-white {
   background: transparent;

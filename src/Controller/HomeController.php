@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\MettierRepository;
+use App\Repository\SettingsRepository;
+use App\Repository\VilleRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,11 +19,13 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(OffreRepository $offreRepository,ServiceSecondaryDataBase $serviceSecondaryDataBase,RequestStack $requestStack,PublicityRepository $publicityRepository,entrepriseRepository $entrepriseRepository,SessionInterface $session, Request $request): Response
+    public function index(MettierRepository $mettierRepository,SettingsRepository $settingsRepository,OffreRepository $offreRepository,ServiceSecondaryDataBase $serviceSecondaryDataBase,RequestStack $requestStack,PublicityRepository $publicityRepository,entrepriseRepository $entrepriseRepository,VilleRepository $villeRepository,SessionInterface $session, Request $request): Response
     {
         // Nombre d'offres par page (par défaut : 10)
-        
-        $monSite = $serviceSecondaryDataBase->getDataFromSecondaryDb();
+        $nomPlateforme = $_ENV['IDENTIFIANT_SITE'];
+        //dd($nomPlateforme);
+        $monSite = $settingsRepository->findByIdentifiant($nomPlateforme);
+        //dd($monSite);
         $session = $requestStack->getSession();
         $Abonne = $session->get('Abonne');
         $connected = false;
@@ -55,12 +60,14 @@ class HomeController extends AbstractController
             'produitsParPage' => $produitsParPage,
             'entreprise' => $entrepriseRepository->afficherEntrepriseAdmin(),
             'total' => $total,
-            'publicite'=>$publicityRepository->findAll(),
+            'publicite'=>$publicityRepository->publication(),
             'premiereEntree' => $premiereEntree,
             'statut'=>$connected,
             'idAbonne'=>$idUser,
             'lastOffer'=>$lastNew,
             'monSite'=>$monSite,
+            'villes'=>$villeRepository->findAll(),
+            'Mettiers'=>$mettierRepository->findAll(),
         ]);
     }
     

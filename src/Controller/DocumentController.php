@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\SettingsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +37,7 @@ class DocumentController extends AbstractController
     }
 
     #[Route('abonne/bibliotheque', name: 'abo-voir.bibliotheque')]
-    public function Affichage(DocumentRepository $DocumentRepository, RequestStack $requestStack,PublicityRepository $publicityRepository, Request $request): Response
+    public function Affichage(SettingsRepository $settingsRepository,DocumentRepository $DocumentRepository, RequestStack $requestStack,PublicityRepository $publicityRepository, Request $request): Response
     {
         $session = $requestStack->getSession();
         $Abonne = $session->get('Abonne');
@@ -70,6 +71,7 @@ class DocumentController extends AbstractController
                 'premiereEntree' => $premiereEntree,
                 'idAbonne'=>$idUser,
                 'statut'=>$statut,
+                'monSite'=> $settingsRepository->findByIdentifiant($_ENV['IDENTIFIANT_SITE']),
             ]);
         }else
         {

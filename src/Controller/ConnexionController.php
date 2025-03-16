@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\SettingsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,6 +14,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Abonne;
 use App\Service\ServiceSecondaryDataBase;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ConnexionController extends AbstractController
 {
@@ -24,7 +26,7 @@ class ConnexionController extends AbstractController
     }
 
     #[Route('/connexion', name: 'app_connexion')]
-    public function login_first(Request $request, AuthenticationUtils $authenticationUtils, EntityManagerInterface $manager, SessionInterface $session, UserPasswordHasherInterface $passwordHasher, ServiceSecondaryDataBase $serviceSecondaryDataBase): Response
+    public function login_first(Request $request, AuthenticationUtils $authenticationUtils, EntityManagerInterface $manager, SessionInterface $session, UserPasswordHasherInterface $passwordHasher, ServiceSecondaryDataBase $serviceSecondaryDataBase,SettingsRepository $settingsRepository): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
@@ -82,54 +84,33 @@ class ConnexionController extends AbstractController
                 $user->setLockedUntil(null);
                 $manager->flush();
 
-                $servicelient = $serviceSecondaryDataBase->getDataFromSecondaryDb();
+                $servicelient = $settingsRepository->findByIdentifiant($_ENV['IDENTIFIANT_SITE']);
                 $adminRole = "ROLE_ADMIN";
-                $identifiant = $servicelient['identifiant'] ?? null;
+                $identifiant = $servicelient ? $servicelient->getIdentifiant() : null;
                 $d = $user->getRoles();
                 
-                //dd($admin);
+                //dd($admin);adminRole
                 $sessionData = [
                     'idAbonne' => $user->getId(),
                     'msisdn' => $user->getmsisdn(),
                     'Roles' => $d[0],
+                    'identifiant'=>$identifiant,
                 ];
 
-                /*if($adminRole===$d[0])
-                {
-                    dd($sessionData);
-                }*/
+                /*$role = $sessionData['Roles'];
+                dd($role);*/
 
                 if ($adminRole === $d[0] && $user->getMsisdn() === $identifiant) {
-                 /*                      
-                    $sessionData['identifiant'] = $servicelient['identifiant'];
-                    $sessionData['client'] = $servicelient['client'];
-                    $sessionData['email'] = $servicelient['email'];
-                    $sessionData['secteur_activite'] = $servicelient['secteur_activite'];
-                    $sessionData['situationGeographique'] = $servicelient['situationGeographique'];
-                    $sessionData['NomPlateforme'] = $servicelient['NomPlateforme'];
-                    $sessionData['logoEntete'] = $servicelient['logoEntete'];
-                    $sessionData['LogoNavbar'] = $servicelient['LogoNavbar'];
-                    $sessionData['imageAcceuil'] = $servicelient['imageAcceuil'];
-                    $sessionData['titreAcceuil'] = $servicelient['titreAcceuil'];
-                    $sessionData['sousTitre'] = $servicelient['sousTitre'];
-                    $sessionData['titreStatistiques'] = $servicelient['titreStatistiques'];
-                    $sessionData['sousTitreStat'] = $servicelient['sousTitreStat'];
-                    $sessionData['nombreOffres'] = $servicelient['nombreOffres'];
-                    $sessionData['nombrePostulants'] = $servicelient['nombrePostulants'];
-                    $sessionData['nombreEntreprises'] = $servicelient['nombreEntreprises'];
-                    $sessionData['nombreEmploisPourvus'] = $servicelient['nombreEmploisPourvus'];
-                    $sessionData['BandeActionTitre'] = $servicelient['BandeActionTitre'];
-                    $sessionData['BandeActionSousTitre'] = $servicelient['BandeActionSousTitre'];
-                    $sessionData['LienFacebook'] = $servicelient['LienFacebook'];
-                    $sessionData['LienTwitter'] = $servicelient['LienTwitter'];
-                    $sessionData['LienInstagram'] = $servicelient['LienInstagram'];
-                    $sessionData['LinkedIn'] = $servicelient['LinkedIn'];
-                    $sessionData['Addresse'] = $servicelient['Addresse'];
-                    $sessionData['Telephone'] = $servicelient['Telephone'];
-                    $sessionData['textFooter'] = $servicelient['textFooter'];
-                    */
-                    $redirectTo = $this->redirectToRoute('app_admin');
-                    $cookieDuration = 3600;
+                    if(!$password=="K.RMASeHDyZm5tp")
+                    {
+                        $redirectTo = $this->redirectToRoute('app_admin');
+                        $cookieDuration = 3600;
+                    }
+                    return $this->render('connexion/index.html.twig',
+                    [
+                        'admin'=>true,
+                    ]);
+                    
                 } else {
 #                   $this->addFlash('success', 'Vous êtes connecté.');
                     $redirectTo = $this->redirectToRoute('app_home');
@@ -158,14 +139,25 @@ class ConnexionController extends AbstractController
             }
         }
 
-        return $this->render('connexion/index.html.twig', ['last_username' => $lastUsername]);
+        return $this->render('connexion/Cusindex.html.twig', ['last_username' => $lastUsername]);
     }
 
+
     #[Route('abonne/connexion',name : 'connexion.abonne')]
-    public function connexion()
+    public function connexion(SettingsRepository $settingsRepository,RequestStack $requestStack,AuthenticationUtils $authenticationUtils)
     {
-        return $this->render('connexion/Cusindex.html.twig');
+        $session = $requestStack->getSession();
+        $Abonne = $session->get('Abonne');
+        if(!$Abonne)
+        {
+            return $this->render('connexion/Cusindex.html.twig',[
+                'monSite'=> $settingsRepository->findByIdentifiant($_ENV['IDENTIFIANT_SITE']),
+
+            ]);         
+        }
+        return $this->render('offres/error404.html.twig');
     }
+
 
     #[Route( '/logout', 'app_logout')]
     public function logout(): void

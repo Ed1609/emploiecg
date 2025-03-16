@@ -23,7 +23,7 @@ class OffreRepository extends ServiceEntityRepository
         // Récupérer les offres actives avec pagination
         $result = $this->createQueryBuilder('o')
         ->where('o.statut_offre = :statut')
-        ->setParameter('statut', 0)
+        ->setParameter('statut', 1)
         ->orderBy('o.date_mise_en_ligne_at', 'DESC')
         ->setMaxResults($limit)
         ->setFirstResult($offset)
@@ -33,7 +33,7 @@ class OffreRepository extends ServiceEntityRepository
         // Vérifier les dates d'expiration et mettre à jour le statut
         foreach ($result as $offre) {
             if ($offre->getDateExpirationAt() < $aujourdhui) {
-                $offre->setStatutOffre(1);
+                $offre->setStatutOffre(0);
                 $this->getEntityManager()->persist($offre); // Marquer l'entité pour la mise à jour
             }
         }
@@ -42,7 +42,7 @@ class OffreRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('o')
         ->where('o.statut_offre = :statut')
-        ->setParameter('statut', 0)
+        ->setParameter('statut', 1)
         ->orderBy('o.date_mise_en_ligne_at', 'DESC')
         ->setMaxResults($limit)
         ->setFirstResult($offset)
@@ -87,7 +87,7 @@ class OffreRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('o')
             ->select('COUNT(o.id)')
             ->where('o.statut_offre = :statut')
-            ->setParameter('statut', 0)
+            ->setParameter('statut', 1)
             ->getQuery()
             ->getSingleScalarResult();
     }

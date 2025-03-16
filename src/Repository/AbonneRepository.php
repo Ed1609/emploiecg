@@ -67,4 +67,17 @@ class AbonneRepository extends ServiceEntityRepository
             'stats_par_ville' => $resultSet
         ];
     }
+
+    public function userParVille(string $ville,int $limit, int $offset): array
+    {
+        $offset = max(0, $offset);
+        return $this->createQueryBuilder('o')
+            ->where('o.Ville LIKE :ville')
+            ->setParameter('ville', '%'.$ville.'%')
+            ->orderBy('o.createAt', 'DESC')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)            
+            ->getQuery()
+            ->getResult();
+    }
 }

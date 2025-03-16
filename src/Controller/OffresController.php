@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\SettingsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,14 +23,13 @@ use App\Service\ServiceSecondaryDataBase;
 class OffresController extends AbstractController
 {
     #[Route('/offres/{slug}-{id}', name: 'app_offres', requirements: ['id' => '\d+', 'slug' => '[a-zA-Z0-9/-]+'])]
-    public function index(OffreRepository $offreRepository,ServiceSecondaryDataBase $serviceSecondaryDataBase,RequestStack $requestStack, EntrepriseRepository $entrepriseRepository, Request $request, int $id, string $slug, SessionInterface $session): Response 
+    public function index(SettingsRepository $settingsRepository,OffreRepository $offreRepository,ServiceSecondaryDataBase $serviceSecondaryDataBase,RequestStack $requestStack, EntrepriseRepository $entrepriseRepository, Request $request, int $id, string $slug, SessionInterface $session): Response 
     {
         $job = $offreRepository->find($id);
         $session = $requestStack->getSession();
         $Abonne = $session->get('Abonne');
         $connected = false;
         $idUser = '';
-        $monSite = $serviceSecondaryDataBase->getDataFromSecondaryDb();
 
         if($Abonne)
         {
@@ -56,9 +56,10 @@ class OffresController extends AbstractController
         return $this->render('offres/index.html.twig', [
             'job' => $job,
             'entreprise' => $entreprise,
-            'monSite'=>$monSite,
             'statut'=>$connected,
             'idAbonne'=>$idUser,
+            'monSite'=> $settingsRepository->findByIdentifiant($_ENV['IDENTIFIANT_SITE']),
+
         ]);
     }
 
@@ -150,7 +151,7 @@ class OffresController extends AbstractController
 
 
     #[Route('abonne/voir-offre', name: 'abo-voir.offre')]
-    public function Affichage(OffreRepository $offreRepository, RequestStack $requestStack,PublicityRepository $publicityRepository, EntrepriseRepository $entrepriseRepository, Request $request): Response
+    public function Affichage(SettingsRepository $settingsRepository,OffreRepository $offreRepository, RequestStack $requestStack,PublicityRepository $publicityRepository, EntrepriseRepository $entrepriseRepository, Request $request): Response
     {
         $session = $requestStack->getSession();
         $Abonne = $session->get('Abonne');
@@ -182,6 +183,7 @@ class OffresController extends AbstractController
                 'total' => $total,
                 'publicite' => $publicityRepository->findAll(),
                 'idAbonne'=>$idUser,
+                'monSite'=> $settingsRepository->findByIdentifiant($_ENV['IDENTIFIANT_SITE']),
                 'statut'=>$statut,
             ]);
         }else

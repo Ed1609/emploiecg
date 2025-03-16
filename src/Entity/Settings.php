@@ -39,24 +39,24 @@ class Settings
     #[ORM\Column(length: 255)]
     private ?string $imageAccueil = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(type: "text")]
     private ?string $titre = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(type: "text")]
     private ?string $sousTitre = null;
 
     // Bande d'action
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(type: "text")]
     private ?string $titreBande = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(type: "text")]
     private ?string $sousTitreBande = null;
 
     // Statistique
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(type: "text")]
     private ?string $titreStat = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(type: "text")]
     private ?string $sousTitreStat = null;
 
     #[ORM\Column(type: "integer")]
@@ -91,10 +91,10 @@ class Settings
     #[ORM\Column(length: 20)]
     private ?string $telephone = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 100)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 100)]
     private ?string $secteurActivite = null;
 
     #[ORM\Column(length: 255)]
@@ -102,6 +102,18 @@ class Settings
 
     #[ORM\Column(type: "text")]
     private ?string $textFooter = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imagePropos = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imagePropos2 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageContact = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageDocuments = null;
 
     // Getters and Setters
 
@@ -415,6 +427,54 @@ class Settings
     public function setTextFooter(string $textFooter): self
     {
         $this->textFooter = $textFooter;
+        return $this;
+    }
+
+    public function getImagePropos(): ?string
+    {
+        return $this->imagePropos;
+    }
+
+    public function setImagePropos(?string $imagePropos): static
+    {
+        $this->imagePropos = $imagePropos;
+
+        return $this;
+    }
+
+    public function getImagePropos2(): ?string
+    {
+        return $this->imagePropos2;
+    }
+
+    public function setImagePropos2(?string $imagePropos2): static
+    {
+        $this->imagePropos2 = $imagePropos2;
+
+        return $this;
+    }
+
+    public function getImageContact(): ?string
+    {
+        return $this->imageContact;
+    }
+
+    public function setImageContact(?string $imageContact): static
+    {
+        $this->imageContact = $imageContact;
+
+        return $this;
+    }
+
+    public function getImageDocuments(): ?string
+    {
+        return $this->imageDocuments;
+    }
+
+    public function setImageDocuments(?string $imageDocuments): static
+    {
+        $this->imageDocuments = $imageDocuments;
+
         return $this;
     }
 }

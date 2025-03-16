@@ -19,6 +19,7 @@ class AppExtension extends AbstractExtension implements GlobalsInterface
     {
         return [
             'statut' => $this->security->getUser() !== null,
+            'monSite'=> $this ->security->getUser() != null,
         ];
     }
 }

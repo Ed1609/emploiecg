@@ -14,38 +14,46 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
-
+use Symfony\Component\HttpFoundation\Request;
 class SettingsType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder,array $options)
     {
         $builder
             ->add('identifiant', TextType::class, [
-                'label' => 'Identifiant'
+                'label' => 'Identifiant',
+                'disabled' => true,
+                //'data'=>$Abonne['identifiant']?? 'null'
             ])
             ->add('nomPlateforme', TextType::class, [
-                'label' => 'Nom de la plateforme'
+                'label' => 'Nom de la plateforme',
+                'disabled' => true
+                //'data'=>$Abonne['nomPlateforme']?? 'ElemboTech'
             ])
             ->add('utilisateurPlateforme', TextType::class, [
-                'label' => 'Utilisateur de la plateforme'
+                'label' => 'Utilisateur de la plateforme',
+                'disabled' => true
             ])
             ->add('logoEntete', FileType::class, [
                 'label' => 'Logo entête',
                 'mapped' => false,
                 'required' => false,
+                'disabled' => true,
                 'attr' => ['accept' => 'image/*']
             ])
             ->add('logoNavBar', FileType::class, [
                 'label' => 'Logo barre de navigation',
                 'mapped' => false,
                 'required' => false,
-                'attr' => ['accept' => 'image/*']
+                'disabled' => true,
+                'attr' => ['accept' => 'image/*'],
             ])
+
             ->add('motCle', TextType::class, [
                 'label' => 'Mot Clé'
             ])
             ->add('description', TextareaType::class, [
-                'label' => 'Description'
+                'label' => 'A propos de votre site'
             ])
             ->add('imageAccueil', FileType::class, [
                 'label' => 'Image de la page d\'accueil',
@@ -54,10 +62,10 @@ class SettingsType extends AbstractType
                 'attr' => ['accept' => 'image/*']
             ])
             ->add('titre', TextType::class, [
-                'label' => 'Titre de la page d\'accueil'
+                'label' => 'Phrase principale de la page d\'accueil'
             ])
             ->add('sousTitre', TextType::class, [
-                'label' => 'Sous-titre de la page d\'accueil'
+                'label' => 'Sous-titre de la phrase de la page d\'accueil'
             ])
             ->add('titreBande', TextType::class, [
                 'label' => 'Titre de la bande d\'action'
@@ -66,22 +74,22 @@ class SettingsType extends AbstractType
                 'label' => 'Sous-titre de la bande d\'action'
             ])
             ->add('titreStat', TextType::class, [
-                'label' => 'Titre Stat'
+                'label' => 'Phrase pour les Stats'
             ])
             ->add('sousTitreStat', TextType::class, [
-                'label' => 'Sous Titre Stat'
+                'label' => 'Sous-titre de la phrase des Stat'
             ])
             ->add('abonnements', NumberType::class, [
-                'label' => 'Abonnements'
+                'label' => 'Nombre d\'Abonnements sur le site'
             ])
             ->add('offresPostulees', NumberType::class, [
-                'label' => 'Offres Postulées'
+                'label' => 'Nombre d\'Offres Postulées'
             ])
             ->add('emploisPourvus', NumberType::class, [
-                'label' => 'Emplois Pourvus'
+                'label' => 'Nombre d\'Emplois Pourvus'
             ])
             ->add('entreprise', NumberType::class, [
-                'label' => 'Entreprise'
+                'label' => 'Nombre d\'Entreprises partenaires'
             ])
             ->add('lienFacebook', UrlType::class, [
                 'label' => 'Lien Facebook'
@@ -93,25 +101,25 @@ class SettingsType extends AbstractType
                 'label' => 'Lien Instagram'
             ])
             ->add('linkedIn', UrlType::class, [
-                'label' => 'LinkedIn'
+                'label' => 'Lien LinkedIn'
             ])
             ->add('addresse', TextType::class, [
-                'label' => 'Adresse'
+                'label' => 'Votre Adresse physique'
             ])
             ->add('telephone', TelType::class, [
-                'label' => 'Téléphone'
+                'label' => 'Numero de téléphone du site'
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email'
+                'label' => 'Adresse Email'
             ])
             ->add('secteurActivite', TextType::class, [
-                'label' => 'Secteur Activité'
+                'label' => 'Secteur Activité de la plateforme'
             ])
             ->add('situationGeographique', TextType::class, [
                 'label' => 'Situation Géographique'
             ])
             ->add('textFooter', TextareaType::class, [
-                'label' => 'Texte Footer'
+                'label' => 'Texte pied de la page'
             ]);
     }
 

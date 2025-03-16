@@ -1,10 +1,11 @@
 {% extends 'basesecond.html.twig' %}
 
-{% block title %}Offres{% endblock %}
+{% block title %}pub{% endblock %}
 
 {% block body %}
+<div class="container">
     <div class="container align-items-center">
-        <h1 class="text-center mb-4">Liste des offres</h1>
+        <h1 class="text-center mb-4">Liste des pub</h1>
 
         {# Affichage des messages flash #}
         {% for type, messages in app.flashes %}
@@ -17,32 +18,31 @@
         {% endfor %}
 
         <div class="row">
-            {% for item in offres %}
+            {% for item in publicity %}
                 <div class="col-md-4 mb-4 d-flex justify-content-center">
                     <div class="card shadow-sm" style="width: 100%;">
                         <div class="card-body text-start">
-                            <h5 class="card-title">{{ item.titre }}</h5>
-                            <p><strong>Secteur :</strong> {{ item.secteur }}</p>
-                            <p><strong>Description :</strong> {{ item.description|nl2br }}</p>
-                            <p><strong>Lieu :</strong> {{ item.lieu }}</p>
-                            <p><strong>Slug :</strong> {{ item.slug }}</p>
+                            <h5 class="card-title">{{ item.libele }}</h5>
+                            <p><strong>Image Publicitaire :</strong><a href="{{ asset('uploads/images/' ~ item.imagePub) }}"> {{ item.imagePub }}</a></p>
+                            <img src="{{ asset('uploads/images/' ~ item.imagePub) }}" alt="logo" class="img-fluid" style="max-height: 50px;">
+                            <p><strong>Description :</strong> {{ item.textPub|nl2br }}</p>
+                            <p><strong>lien de la pub : </strong><a href="{{ item.lienOrientation }}" target="_blank" rel="noopener noreferrer">{{ item.lienOrientation }}</a></p>
                             <p><strong>Date mise en ligne :</strong> {{ item.dateMiseEnLigneAt|date('d-m-Y H:i') }}</p>
                             <p><strong>Date expiration :</strong> {{ item.dateExpirationAt|date('d-m-Y H:i') }}</p>
-                            <p><strong>Type contrat :</strong> {{ item.typeContrat }}</p>
-                            <p><strong>Entreprise :</strong> {{ item.entreprise.libele }}</p>
+                            <p><strong>Entreprise :</strong> {{ item.demandeur}}</p>
+                            <p><strong>Contact :</strong> {{ item.contact}}</p>
 
-                            <p><strong>Statut Offre :</strong>
-                                {% if item.statutOffre == 1 %}
+                            <p><strong>Statut de la pub :</strong>
+                                {% if item.status == 1 %}
                                     <span class="badge bg-primary">Active</span>
-                                    <a href="{{ path('changerStatut', {'statut':0,'id': item.id}) }}" class="badge bg-warning">désactiver</a>
+                                    <a href="{{ path('statuspub', {'statut':0,'id': item.id}) }}" class="badge bg-warning">désactiver</a>
 
                                 {% else %}
                                     <span class="badge bg-danger">Inactive</span>
-                                    <a href="{{ path('changerStatut', {'statut':1,'id': item.id}) }}" class="badge bg-primary">Réactiver</a>
+                                    <a href="{{ path('statuspub', {'statut':1,'id': item.id}) }}" class="badge bg-primary">Réactiver</a>
                                 {% endif %}
-                                    <a href="{{ path('adminSupprime_Offre', {'id': item.id}) }}" class="badge bg-danger"
-                                    onclick="return confirm('Voulez-vous vraiment supprimer cette offre ?')">supprimer</a>                                
-
+                                    <a href="{{ path('adminSupprime_pub', {'id': item.id}) }}" class="badge bg-danger" 
+                                    onclick="return confirm('Voulez-vous vraiment supprimer cette publicité ?')">supprimer</a>                                
                             </p>
                         </div>
                     </div>
@@ -54,17 +54,17 @@
 
         <div class="row pagination-wrap">
           <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-            <span>Voir {{ (premiereEntree + 1) }}-{{ (premiereEntree + offres|length) }} des offres {{ total }} d'emploi</span>
+            <span>Voir {{ (premiereEntree + 1) }}-{{ (premiereEntree + publicity|length) }} des pub {{ total }} d'emploi</span>
           </div>
           <div class="col-md-6 text-center text-md-right">
             <div class="custom-pagination ml-auto">
               {% if pageActuelle > 1 %}
-                <a href="{{ path('admin-voir.offre', {'page': pageActuelle - 1, 'offresParPage': produitsParPage}) }}" class="prev">Prev</a>
+                <a href="{{ path('app_publicity', {'page': pageActuelle - 1, 'pubParPage': pubParPage}) }}" class="prev">Prev</a>
               {% endif %}
 
               <div class="d-inline-block">
                 {% for i in 1..nombreDePages %}
-                  <a href="{{ path('admin-voir.offre', {'page': i, 'offresParPage': produitsParPage}) }}" 
+                  <a href="{{ path('app_publicity', {'page': i, 'pubParPage': pubParPage}) }}" 
                      class="{% if i == pageActuelle %}active{% endif %}">
                     {{ i }}
                   </a>
@@ -72,13 +72,14 @@
               </div>
 
               {% if pageActuelle < nombreDePages %}
-                <a href="{{ path('admin-voir.offre', {'page': pageActuelle + 1, 'offresParPage': produitsParPage}) }}" class="next">Next</a>
+                <a href="{{ path('app_publicity', {'page': pageActuelle + 1, 'pubParPage': pubParPage}) }}" class="next">Next</a>
               {% endif %}
             </div>
           </div>
         </div>
-     <a href="{{ path('creer-offre') }}" class="btn btn-primary mt-3">Ajouter une offre</a>
+     <a href="{{ path('publicity.new') }}" class="btn btn-primary mt-3">Ajouter une pub</a>        
     </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}

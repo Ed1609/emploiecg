@@ -3,7 +3,7 @@
 {% block title %}Accueil{% endblock %}
 
 {% block stylesheets %}
-        <link rel="shortcut icon" href="{{ asset('images/ftco-32x32.png') }}">
+        <link rel="shortcut icon" href="{{ asset('uploads/images/' ~ monSite.logoEntete) }}">
         {# CSS principaux #}
         <link rel="stylesheet" href="{{ asset('css/custom-bs.css') }}">
         <link rel="stylesheet" href="{{ asset('css/jquery.fancybox.min.css') }}">
@@ -27,14 +27,14 @@
 <div class="site-wrap">
 
     <!-- HOME -->
-    <section class="home-section section-hero overlay bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
+    <section class="home-section section-hero overlay bg-image" style="background-image: url('{{ asset('uploads/images/' ~ monSite.imageAccueil) }}" id="home-section">
 
       <div class="container">
         <div class="row align-items-center justify-content-center">
           <div class="col-md-12">
             <div class="mb-5 text-center">
-              <h1 class="text-white font-weight-bold">Le moyen le plus simple pour obtenir l'emploi de vos rêves</h1>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate est, consequuntur perferendis.</p>
+              <h1 class="text-white font-weight-bold">{{monSite.titre}}</h1>
+              <p>{{monSite.sousTitre}}</p>
             </div>
             {% if not statut %}
               <form id="form-inscription" action="{{ path('abonne_new') }}" method="post" class="search-jobs-form">
@@ -54,29 +54,19 @@
 
                   <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                     <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" id="Ville" name="Ville" title="Où préférez-vous travailler ?" required>
-                      <option value="Brazzaville">Brazzaville</option>
-                      <option value="Pointe-Noire">Pointe-Noire</option>
-                      <option value="Dolisie">Dolisie</option>
-                      <option value="Nkayi">Nkayi</option>
-                      <option value="Ouesso">Ouesso</option>
-                      <option value="Kintélé">Kintélé</option>
-                      <option value="Oyo">Oyo</option>
-                      <option value="Bétou">Bétou</option>
-                      <option value="Gamboma">Gamboma</option>
-                      <option value="Owando">Owando</option>
-                      <option value="Madingou">Madingou</option>
-                      <option value="Impfondo">Impfondo</option>
-                      <option value="Makoua">Makoua</option>
-                      <option value="Sibiti">Sibiti</option>
+                      {% for ville in villes %}
+                        <option value="{{ville.nomVille}}">{{ville.nomVille}}</option>
+                      {% endfor %}
                     </select>
                   </div>
 
                   <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                    <select class="selectpicker" id="specialite" name="specialite" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Quel intitulé de poste devons-nous utiliser pour vous ?" required>
-                      <option>Développeur</option>
-                      <option>Designer intérieur</option>
+                    <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" id="specialite" name="specialite" title="Quel intitulé de poste devons-nous utiliser pour vous ?" required>
+                      {% for Mettier in Mettiers %}
+                        <option value="{{Mettier.libele}}">{{Mettier.libele}}</option>
+                      {% endfor %}
                     </select>
-                  </div>
+                  </div>                  
 
                   <!-- Mode de débit sur la même ligne -->
                   <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
@@ -138,36 +128,36 @@
       <div class="container">
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
-            <h2 class="section-title mb-2 text-white">JobBoard Site Stats</h2>
-            <p class="lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita unde officiis recusandae sequi excepturi corrupti.</p>
+            <h2 class="section-title mb-2 text-white">{{monSite.titreStat}}</h2>
+            <p class="lead text-white">{{monSite.sousTitreStat}}</p>
           </div>
         </div>
         <div class="row pb-0 block__19738 section-counter">
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="1930">0</strong>
+              <strong class="number" data-number="{{monSite.Abonnements}}">0</strong>
             </div>
             <span class="caption">Abonnements</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="54">0</strong>
+              <strong class="number" data-number="{{monSite.offresPostulees}}">0</strong>
             </div>
             <span class="caption">Offres postulés</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="120">0</strong>
+              <strong class="number" data-number="{{monSite.emploisPourvus}}">0</strong>
             </div>
             <span class="caption">Emplois pourvus</span>
           </div>
 
           <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
             <div class="d-flex align-items-center justify-content-center mb-2">
-              <strong class="number" data-number="550">0</strong>
+              <strong class="number" data-number="{{monSite.entreprise}}">0</strong>
             </div>
             <span class="caption">Entreprises</span>
           </div>            
@@ -278,8 +268,8 @@
       <div class="container">
         <div class="row align-items-center">
           <div class="col-md-8">
-            <h2 class="text-white">Job alerte +++</h2>
-            <p class="mb-0 text-white lead">Directement sur votre telephone dans un SMS.</p>
+            <h2 class="text-white">{{monSite.titreBande}}</h2>
+            <p class="mb-0 text-white lead">{{monSite.sousTitreBande}}</p>
           </div>
           <div class="col-md-3 ml-auto">
             <a href="{{ path('connexion.abonne') }}" class="btn btn-warning btn-block btn-lg">S'identifier</a>
@@ -315,7 +305,7 @@
   <div id="carouselPublicite" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="false">
     <div class="carousel-inner">
       {% for publicites in publicite %}
-        <div class="carousel-item {% if loop.first %} active {% endif %}">
+        <div class="carousel-item {% if loop.first %} active {% endif %}" target="_blank" onclick="window.location.href='{{publicites.lienOrientation}}';" style="cursor: pointer;">
           <div class="d-flex justify-content-center align-items-center" style="height: 400px; background-image: url('{{ asset('uploads/images/' ~ publicites.imagePub) }}'); background-size: cover; background-position: center;">
             <div class="carousel-caption d-none d-md-block text-center">
               <blockquote class="blockquote">

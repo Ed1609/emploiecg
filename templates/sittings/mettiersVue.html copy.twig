@@ -1,0 +1,74 @@
+{% extends 'basesecond.html.twig' %}
+
+{% block body %}
+<div class="container">
+    {% for type, messages in app.flashes %}
+        <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    <h1 class="text-center">Liste des Mettiers</h1>
+    <table class="table table-striped mt-4">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Mettier</th>
+                <th>Description</th>
+                <th>Date de création</th>
+                <th>Action </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mettier in mettiers %}
+                <tr>
+                    <td>{{ mettier.id }}</td>
+                    <td>{{ mettier.libele }}</td>
+                    <td>{{ mettier.description }}</td>
+                    <td>{{ mettier.createdAt|date('d-m-Y H:i') }}</td>
+                    <td>
+                        <a href="{{ path('adminSupprime_mettier', {id: mettier.id}) }}" 
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Voulez-vous vraiment supprimer cette mettier ?')">
+                            Supprimer
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">Aucun mettier trouvée.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('parametres-mettier') }}" class="btn btn-primary mt-3">Ajouter un mettier</a>
+
+</div>
+{% endblock %}
+{% block javascripts %}
+    <!-- Core Scripts -->
+    <script src="{{ asset('js/core/jquery-3.7.1.min.js') }}" defer></script>
+    <script src="{{ asset('js/core/popper.min.js') }}" defer></script>
+    <script src="{{ asset('js/core/bootstrap.min.js') }}" defer></script>
+
+    <!-- Plugins -->
+    <script src="{{ asset('js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/chart.js/chart.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/jquery.sparkline/jquery.sparkline.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/chart-circle/circles.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/datatables/datatables.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/jsvectormap/jsvectormap.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/jsvectormap/world.js') }}" defer></script>
+
+    <!-- Main JS -->
+    <script src="{{ asset('js/kaiadmin.min.js') }}" defer></script>
+
+    <!-- Demo Scripts (à supprimer en production) -->
+    <script src="{{ asset('js/setting-demo.js') }}" defer></script>
+    <script src="{{ asset('js/demo.js') }}" defer></script>
+
+{% endblock %}

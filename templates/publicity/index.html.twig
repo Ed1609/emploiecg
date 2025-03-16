@@ -3,9 +3,17 @@
 {% block body %}
     <div class="container">
     <div class="container mt-5 p-4 border rounded shadow bg-white">
-        <h2 class="mb-4">Ajouter une publicité</h2>
+        <h2 class="mb-4 text-center">Ajouter une publicité</h2>
         {{ form_start(form) }}
         <div class="row">
+                {% for type, messages in app.flashes %}
+                <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
+                    {% for message in messages %}
+                        {{ message|raw }}
+                    {% endfor %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
             <div class="col-md-6">
                 <div class="mb-3">
                     {{ form_label(form.imagePub, 'Image de la publicité', {'label_attr': {'class': 'form-label'}}) }}
@@ -39,6 +47,11 @@
                     {{ form_widget(form.textPub, {'attr': {'class': 'form-control', 'rows': '4'}}) }}
                     {{ form_errors(form.textPub) }}
                 </div>
+                <div class="mb-3">
+                    {{ form_label(form.dateExpirationAt, 'Date d\'expiration', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.dateExpirationAt, {'attr': {'class': 'form-control', 'rows': '4'}}) }}
+                    {{ form_errors(form.dateExpirationAt) }}
+                </div>                
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Soumettre</button>
@@ -47,3 +60,27 @@
     </div>
     </div>
 {% endblock %}
+{% block javascripts %}
+    <!-- Core Scripts -->
+    <script src="{{ asset('js/core/jquery-3.7.1.min.js') }}" defer></script>
+    <script src="{{ asset('js/core/popper.min.js') }}" defer></script>
+    <script src="{{ asset('js/core/bootstrap.min.js') }}" defer></script>
+
+    <!-- Plugins -->
+    <script src="{{ asset('js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/chart.js/chart.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/jquery.sparkline/jquery.sparkline.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/chart-circle/circles.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/datatables/datatables.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/jsvectormap/jsvectormap.min.js') }}" defer></script>
+    <script src="{{ asset('js/plugin/jsvectormap/world.js') }}" defer></script>
+
+    <!-- Main JS -->
+    <script src="{{ asset('js/kaiadmin.min.js') }}" defer></script>
+
+    <!-- Demo Scripts (à supprimer en production) -->
+    <script src="{{ asset('js/setting-demo.js') }}" defer></script>
+    <script src="{{ asset('js/demo.js') }}" defer></script>
+{% endblock %}
+

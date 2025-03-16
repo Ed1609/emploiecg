@@ -1,12 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'connectbase.html.twig' %}
 
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<div class="container mt-5" style="padding: 150px;">
+<div class="container mt-5 bg-grey" style="padding: 150px;">
     <div class="row justify-content-center">
         <div class="col-md-6">
         <div id="errorContainer" class="alert alert-danger" style="display: none;"></div>
+        {% if admin == true %}
             <form id="loginForm" method="post">
               {% for type, messages in app.flashes %}
                   <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
@@ -23,7 +24,7 @@
                     </div>
                 {% endif %}
 
-                <h1 class="h3 mb-3 font-weight-normal text-center">Please sign in</h1>
+                <h1 class="h3 mb-3 font-weight-normal text-center">Connectez-vous s'il vous plait</h1>
                 <div class="form-group">
                     <label for="msisdn">msisdn</label>
                     <input type="msisdn" name="msisdn" id="msisdn" class="form-control" autocomplete="msisdn" required autofocus>
@@ -35,10 +36,6 @@
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                {#
-                    Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-                    See https://symfony.com/doc/current/security/remember_me.html 
-                #}
                 <div class="form-check mb-3">
                     <input type="checkbox" name="_remember_me" id="_remember_me" class="form-check-input">
                     <label for="_remember_me" class="form-check-label">Remember me</label>
@@ -48,6 +45,11 @@
                     Se connecter
                 </button>
             </form>
+            {% else %}
+            <a href="{{ path('app_home') }}" class="btn btn-primary btn-lg">
+                <i class="bi bi-house"></i> Retour à l'accueil
+            </a>
+        {% endif %}
         </div>
     </div>
 </div>

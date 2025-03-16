@@ -55,14 +55,9 @@
                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
               {% endfor %}
-              {% if app.user %}
-                <div class="mb-3">
-                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-                </div>
-              {% endif %}
               <div class="row form-group">
                 <div class="col-md-12 mb-3 mb-md-0">
-                  <label class="text-black" for="fname">Email</label>
+                  <label class="text-black" for="fname">Numéro de téléphone</label>
                   <input type="msisdn" name="msisdn" id="msisdn" class="form-control" placeholder="2420550..." autocomplete="msisdn" required autofocus>
                 </div>
               </div>

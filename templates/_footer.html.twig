@@ -3,16 +3,16 @@
       <a href="#top" class="smoothscroll scroll-top">
         <span class="icon-keyboard_arrow_up"></span>
       </a>
-        <div class="row text-center">
+        <div class="text-center">
           <div class="col-12">
             <h3>Nous suivre</h3>
-                <a href="#"><span class="icon-facebook"></span></a>
-                <a href="#"><span class="icon-twitter"></span></a>
-                <a href="#"><span class="icon-instagram"></span></a>
-                <a href="#"><span class="icon-linkedin"></span></a>
+                <a href="{{monSite.lienFacebook}}"><span class="icon-facebook"></span></a>
+                <a href="{{monSite.lienTwitter}}"><span class="icon-twitter"></span></a>
+                <a href="{{monSite.lienInstagram}}"><span class="icon-instagram"></span></a>
+                <a href="{{monSite.linkedIn}}"><span class="icon-linkedin"></span></a>
 
             {% if statut %}
-              <h6><a href="{{path('app_logout')}}">Se déconnecter</a><span> Ou </span><a href="{{path('Abonne_delete',{'id': idAbonne})}}">Se désabonner</a></h6>
+              <h6><a href="{{path('app_logout')}}">Se déconnecter</a><span> Ou </span><a href="{{path('Abonne_delete',{'id': idAbonne})}}" onclick="return confirm('Voulez-vous vraiment vous désabonner ?')">Se désabonner</a></h6>
             {% endif %}
               <p class="copyright"><small>
               Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a></small></p>

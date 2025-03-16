@@ -3,7 +3,7 @@
 {% block body %}
 
 <div class = "container">
-    <h1>Ajouter un Abonné</h1>
+    <h1 class="text-center">Ajouter un Abonné</h1>
 
     {% for type, messages in app.flashes %}
         <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
@@ -21,19 +21,27 @@
         </div>
 
         <div class="form-group">
-            <label for="Ville" class="form-label">Ville</label>
-            <input type="text" id="Ville" name="Ville" class="form-control" required maxlength="50">
+          <label for="specialite" class="form-label">Lieu</label>
+            <select class="form-control" maxlength="50" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" id="Ville" name="Ville" title="Lieu de travail ?" required>
+              {% for ville in villes %}
+                <option value="{{ville.nomVille}}">{{ville.nomVille}}</option>
+              {% endfor %}
+            </select>
         </div>
 
         <div class="form-group">
             <label for="specialite" class="form-label">Spécialité</label>
-            <input type="text" id="specialite" name="specialite" class="form-control" required maxlength="100">
+            <select class="form-control" maxlength="50" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" id="specialite" name="specialite" title="Choix de la spécilité?" required>
+              {% for Mettier in Mettiers %}
+                <option value="{{Mettier.libele}}">{{Mettier.libele}}</option>
+              {% endfor %}
+            </select>
         </div>
          <div class="form-group">
          <label for = "mode_debit"class="form-label">Quel mode de paiement ?</label>
-            <select class="selectpicker" id="mode_debit" data-style="btn-white btn-lg" data-width="100%" name="mode_debit" required>
+            <select class="form-control" id="mode_debit" data-style="btn-white btn-lg" data-width="100%" name="mode_debit" required>
               <option value="credit">Crédit</option>
-              <option value="am">AM</option>
+              <option value="am">Airtel Money</option>
             </select>
         </div> 
 

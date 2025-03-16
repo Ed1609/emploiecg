@@ -10,6 +10,7 @@
         <title>{% block title %}Bienvenue !{% endblock %}</title>
         
         <link rel="icon" href="{{ asset('img/kaiadmin/favicon.ico') }}" type="image/x-icon"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
         
         <!-- Fonts and icons -->
         <script src="{{ asset('js/plugin/webfont/webfont.min.js') }}"></script>
@@ -42,7 +43,7 @@
     </head>
     
     <body>
-        <div class="wrapper">
+        
           {% include 'navbar/index.html.twig' %}
           
           {# Contenu principal #}
@@ -73,6 +74,5 @@
           <script src="{{ asset('js/setting-demo.js') }}" defer></script>
           <script src="{{ asset('js/demo.js') }}" defer></script>
           {% endblock %}
-        </div>
     </body>
 </html>

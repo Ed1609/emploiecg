@@ -2297,7 +2297,7 @@ pre code {
 .form-control:focus {
     color: #495057;
     background-color: #fff;
-    border-color: #0b1d6e;
+    border-color: #32d8fb;
     outline: 0;
     -webkit-box-shadow: 0 0 0 0.2rem rgba(137, 186, 22, 0.25);
     box-shadow: 0 0 0 0.2rem rgba(137, 186, 22, 0.25)
@@ -2922,8 +2922,8 @@ fieldset:disabled a.btn {
 
 .btn-primary:hover {
     color: #fff;
-    background-color: rgba(50, 216, 251, 0.7); 
-    border-color: rgba(50, 216, 251, 0.7);
+    background-color: #709812;
+    border-color: #32d8fb
 }
 
 .btn-primary.focus,
@@ -3002,8 +3002,8 @@ fieldset:disabled a.btn {
 
 .btn-success:hover {
     color: #fff;
-  background-color: rgba(50, 216, 251, 0.7); 
-  border-color: rgba(50, 216, 251, 0.7);
+    background-color: #709812;
+    border-color: #32d8fb
 }
 
 .btn-success.focus,
@@ -4264,7 +4264,7 @@ input[type=submit].btn-block {
 }
 
 .custom-control-input:focus:not(:checked)~.custom-control-label:before {
-    border-color: #0b1d6e
+    border-color: #32d8fb
 }
 
 .custom-control-input:not(:disabled):active~.custom-control-label:before {
@@ -4412,7 +4412,7 @@ input[type=submit].btn-block {
 }
 
 .custom-select:focus {
-    border-color: #0b1d6e;
+    border-color: #32d8fb;
     outline: 0;
     -webkit-box-shadow: 0 0 0 0.2rem rgba(137, 186, 22, 0.25);
     box-shadow: 0 0 0 0.2rem rgba(137, 186, 22, 0.25)
@@ -4473,7 +4473,7 @@ input[type=submit].btn-block {
 }
 
 .custom-file-input:focus~.custom-file-label {
-    border-color: #0b1d6e;
+    border-color: #32d8fb;
     -webkit-box-shadow: 0 0 0 0.2rem rgba(137, 186, 22, 0.25);
     box-shadow: 0 0 0 0.2rem rgba(137, 186, 22, 0.25)
 }
