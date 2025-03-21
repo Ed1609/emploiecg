@@ -25,15 +25,18 @@
                 {% endif %}
 
                 <h1 class="h3 mb-3 font-weight-normal text-center">Connectez-vous s'il vous plait</h1>
+               
                 <div class="form-group">
                     <label for="msisdn">msisdn</label>
-                    <input type="msisdn" name="msisdn" id="msisdn" class="form-control" autocomplete="msisdn" required autofocus>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" class="form-control" autocomplete="current-password" required>
+                    <input type="msisdn" name="msisdn" id="msisdn" class="form-control" required >
                 </div>
 
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control"  required>
+                </div>
+                
+                <input type="hidden" name="origin" id="origin" class="form-control" value="admin" required>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                 <div class="form-check mb-3">

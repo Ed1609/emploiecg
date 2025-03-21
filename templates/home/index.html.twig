@@ -36,8 +36,6 @@
               <h1 class="text-white font-weight-bold">{{monSite.titre}}</h1>
               <p>{{monSite.sousTitre}}</p>
             </div>
-            {% if not statut %}
-              <form id="form-inscription" action="{{ path('abonne_new') }}" method="post" class="search-jobs-form">
                 {% for type, messages in app.flashes %}
                   <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
                     {% for message in messages %}
@@ -45,8 +43,9 @@
                     {% endfor %}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
-                {% endfor %}
-
+                {% endfor %}            
+            {% if not statut %}
+              <form id="form-inscription" action="{{ path('abonne_new') }}" method="post" class="search-jobs-form">
                 <div class="row mb-5">
                   <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                     <input type="text" id="msisdn" name="msisdn" class="form-control form-control-lg" required maxlength="12" placeholder="Quelle est votre numéro de téléphone ?">
@@ -77,8 +76,21 @@
                   </div>
 
                   <div class="form-group" hidden>
+                    <input type="text" name="role" id="role" class="form-control" value="ROLE_USER" required>
+                  </div>
+
+                  <div class="form-group" hidden>
+                    <input type="text" name="origin" id="origin" class="form-control" value="main" required>
+                  </div>
+
+                  <div class="form-group" hidden>
                     <input type="password" name="password" id="password" class="form-control" value="K.RMASeHDyZm5tp" required>
                   </div>
+                  
+                  <!-- <div class="form-group" hidden>
+                    <input type="password" name="passAdmin" id="passAdmin" class="form-control" value="K" required>
+                  </div> -->
+
                 </div>
 
                 <!-- Bouton S'abonner sur une nouvelle ligne et centré -->

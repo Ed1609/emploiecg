@@ -526,4 +526,18 @@ class AdminController extends AbstractController
 
         return $this->redirectToRoute('parametres-vue-mettier');
     }
+
+    #[Route('admin/new-user', name: 'admin-new-user')]
+    public function Neadmin(VilleRepository $villeRepository,MettierRepository $mettierRepository )
+    {
+        return $this->render('admin/newAdmin.html.twig',[
+            'villes'=>$villeRepository->findAll(),
+            'Mettiers'=>$mettierRepository->findAll(),
+        ]);
+    }
+
+
+    
+
+
 }

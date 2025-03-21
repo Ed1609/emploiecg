@@ -24,7 +24,7 @@ class HomeController extends AbstractController
         // Nombre d'offres par page (par défaut : 10)
         $nomPlateforme = $_ENV['IDENTIFIANT_SITE'];
         //dd($nomPlateforme);
-        $monSite = $settingsRepository->findByIdentifiant($nomPlateforme);
+        $monSite = $settingsRepository->findByIdentifiant($nomPlateforme) ?? null;
         //dd($monSite);
         $session = $requestStack->getSession();
         $Abonne = $session->get('Abonne');

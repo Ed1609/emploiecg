@@ -115,6 +115,9 @@ class Settings
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageDocuments = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $password = null;
+
     // Getters and Setters
 
     public function getId(): ?int
@@ -474,6 +477,18 @@ class Settings
     public function setImageDocuments(?string $imageDocuments): static
     {
         $this->imageDocuments = $imageDocuments;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(?string $password): static
+    {
+        $this->password = $password;
 
         return $this;
     }

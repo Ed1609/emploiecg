@@ -52,6 +52,9 @@ class Abonne implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 25)]
     private ?string $modePaiement = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $passAdmin = null;
+
     public function __construct()
     {
         $this->roles = ['ROLE_USER'];
@@ -182,6 +185,18 @@ class Abonne implements UserInterface, PasswordAuthenticatedUserInterface
     public function setModePaiement(string $modePaiement): static
     {
         $this->modePaiement = $modePaiement;
+
+        return $this;
+    }
+
+    public function getPassAdmin(): ?string
+    {
+        return $this->passAdmin;
+    }
+
+    public function setPassAdmin(?string $passAdmin): static
+    {
+        $this->passAdmin = $passAdmin;
 
         return $this;
     }

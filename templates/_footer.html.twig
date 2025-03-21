@@ -12,10 +12,17 @@
                 <a href="{{monSite.linkedIn}}"><span class="icon-linkedin"></span></a>
 
             {% if statut %}
-              <h6><a href="{{path('app_logout')}}">Se déconnecter</a><span> Ou </span><a href="{{path('Abonne_delete',{'id': idAbonne})}}" onclick="return confirm('Voulez-vous vraiment vous désabonner ?')">Se désabonner</a></h6>
+              <h6>
+                  <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                  <span> Ou </span>
+                  <form action="{{ path('Abonne_unsubscribe', { 'id': idAbonne }) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment vous désabonner ?')">
+                      <input type="hidden" name="_token" value="{{ csrf_token('unsubscribe') }}">
+                      <button type="submit" >Se désabonner</button>
+                  </form>
+              </h6>
             {% endif %}
               <p class="copyright"><small>
-              Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a></small></p>
+              Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved {{monSite.nomPlateforme}}| Powered by <a href="https://elembo-tech.com" target="_blank" >ElemboTech</a></small></p>
           </div>
         </div>
     </footer>

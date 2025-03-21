@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Settings;
 use App\Repository\SettingsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Abonne;
 use App\Service\ServiceSecondaryDataBase;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Psr\Log\LoggerInterface;
 
 class ConnexionController extends AbstractController
 {
@@ -25,103 +27,84 @@ class ConnexionController extends AbstractController
         ]);
     }
 
-    #[Route('/connexion', name: 'app_connexion')]
-    public function login_first(Request $request, AuthenticationUtils $authenticationUtils, EntityManagerInterface $manager, SessionInterface $session, UserPasswordHasherInterface $passwordHasher, ServiceSecondaryDataBase $serviceSecondaryDataBase,SettingsRepository $settingsRepository): Response
+    #[Route('/connexion', 'app_connexion')]
+    public function login_first(Request $request,LoggerInterface $logger,AuthenticationUtils $authenticationUtils,EntityManagerInterface $manager,SessionInterface $session,UserPasswordHasherInterface $passwordHasher,ServiceSecondaryDataBase $serviceSecondaryDataBase,SettingsRepository $settingsRepository): Response
     {
-        $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
-
-        if ($error) {
-            $user = $manager->getRepository(Abonne::class)->findOneBy(['msisdn' => $lastUsername]);
-
-            if ($user) {
-                if ($user->isLocked()) {
-                    $lockedUntil = $user->getLockedUntil();
-                    if ($lockedUntil && $lockedUntil > new \DateTime()) {
-                        $timeRemaining = $lockedUntil->getTimestamp() - (new \DateTime())->getTimestamp();
-                        $minutesRemaining = ceil($timeRemaining / 60);
-                        $this->addFlash('error', "Votre compte est verrouillé. Réessayez dans {$minutesRemaining} minutes.");
-                        return $this->render('connexion/index.html.twig', ['last_username' => $lastUsername]);
-                    } else {
-                        // Déverrouillage automatique après expiration
-                        $user->setIsLocked(false);
-                        $user->setLockedUntil(null);
-                        $user->setTentativeconnexion(0);
-                        $manager->flush();
-                    }
-                }
-
-                $user->setTentativeconnexion($user->getTentativeconnexion() + 1);
-
-                if ($user->getTentativeconnexion() >= 3) {
-                    $user->setIsLocked(true);
-                    $user->setLockedUntil((new \DateTime())->modify('+15 minutes'));
-                    $this->addFlash('error', 'Compte verrouillé après 3 tentatives échouées. Réessayez dans 15 minutes.');
-                } else {
-                    $this->addFlash('error', 'Identifiants incorrects.');
-                }
-
-                $manager->flush();
-            } else {
-                $this->addFlash('error', 'Identifiants incorrects.');
-            }
-        }
 
         if ($request->isMethod('POST')) {
             $msisdn = $request->request->get('msisdn');
             $password = $request->request->get('password');
+            $origin = $request->request->get('origin');
 
+            // Recherche de l'utilisateur
             $user = $manager->getRepository(Abonne::class)->findOneBy(['msisdn' => $msisdn]);
 
             if (!$user) {
-                $this->addFlash('error', 'Vous n\'êtes pas abonné,abonnez-vous !.');
+                $this->addFlash('error', 'Vous n\'êtes pas abonné, abonnez-vous !');
+                $logger->error("Erreur d'authentification : Utilisateur inexistant.");
                 return $this->redirectToRoute('app_home', ['last_username' => $msisdn]);
             }
 
+            // 🔹 Vérification du rôle (Admin) avant toute autre action
+            $roles = $user->getRoles();
+            $adminRole = "ROLE_ADMIN";
+
+            if (in_array($adminRole, $roles, true) && $origin === "main") {
+                $this->addFlash('success', 'Accès administrateur requis.');
+                $logger->info("Information d'authentification : Accès admin requis.");
+                return $this->render('connexion/index.html.twig', ['admin' => true]);
+            }
+
+            // 🔹 Vérification du verrouillage du compte
+            if ($user->isLocked()) {
+                $lockedUntil = $user->getLockedUntil();
+                if ($lockedUntil && $lockedUntil > new \DateTime()) {
+                    $minutesRemaining = ceil(($lockedUntil->getTimestamp() - time()) / 60);
+                    $this->addFlash('error', "Votre compte est verrouillé. Réessayez dans {$minutesRemaining} minutes.");
+                    $logger->error("Erreur d'authentification : Compte verrouillé.");
+                    return $this->render('connexion/index.html.twig', ['last_username' => $msisdn,'admin'=>in_array($adminRole, $roles, true),]);
+                } else {
+                    // Déverrouillage automatique après expiration
+                    $user->setIsLocked(false);
+                    $user->setLockedUntil(null);
+                    $user->setTentativeconnexion(0);
+                    $manager->flush();
+                }
+            }
+
+            // 🔹 Vérification du mot de passe
             if ($passwordHasher->isPasswordValid($user, $password)) {
+                // Réinitialisation des tentatives et connexion
                 $user->setTentativeconnexion(0);
                 $user->setIsLocked(false);
                 $user->setLockedUntil(null);
                 $manager->flush();
 
                 $servicelient = $settingsRepository->findByIdentifiant($_ENV['IDENTIFIANT_SITE']);
-                $adminRole = "ROLE_ADMIN";
                 $identifiant = $servicelient ? $servicelient->getIdentifiant() : null;
-                $d = $user->getRoles();
-                
-                //dd($admin);adminRole
+
                 $sessionData = [
                     'idAbonne' => $user->getId(),
                     'msisdn' => $user->getmsisdn(),
-                    'Roles' => $d[0],
-                    'identifiant'=>$identifiant,
+                    'Roles' => $roles[0],
+                    'identifiant' => $identifiant,
                 ];
+                $session->set('Abonne', $sessionData);
 
-                /*$role = $sessionData['Roles'];
-                dd($role);*/
-
-                if ($adminRole === $d[0] && $user->getMsisdn() === $identifiant) {
-                    if(!$password=="K.RMASeHDyZm5tp")
-                    {
-                        $redirectTo = $this->redirectToRoute('app_admin');
-                        $cookieDuration = 3600;
-                    }
-                    return $this->render('connexion/index.html.twig',
-                    [
-                        'admin'=>true,
-                    ]);
-                    
+                // Définition de la redirection
+                if (in_array($adminRole, $roles, true)) {
+                    $redirectTo = $this->redirectToRoute('app_admin');
+                    $cookieDuration = 3600;
                 } else {
-#                   $this->addFlash('success', 'Vous êtes connecté.');
                     $redirectTo = $this->redirectToRoute('app_home');
                     $cookieDuration = 604800;
                 }
 
-                $session->set('Abonne', $sessionData);
-
+                // Création du cookie
                 $cookie = new Cookie(
                     'Abonne',
-                    json_encode(['idAbonne' => $user->getId(), 'Roles' => $user->getRoles()]),
+                    json_encode(['idAbonne' => $user->getId(), 'Roles' => $roles]),
                     time() + $cookieDuration,
                     '/',
                     null,
@@ -134,8 +117,25 @@ class ConnexionController extends AbstractController
                 $redirectTo->headers->setCookie($cookie);
                 return $redirectTo;
             } else {
-                $this->addFlash('error', 'Informations incorrectes.');
-                return $this->render('connexion/index.html.twig', ['last_username' => $msisdn]);
+                // 🔹 Gestion des tentatives en cas de mot de passe incorrect
+                $user->setTentativeconnexion($user->getTentativeconnexion() + 1);
+
+                if ($user->getTentativeconnexion() >= 3) {
+                    $user->setIsLocked(true);
+                    $user->setLockedUntil((new \DateTime())->modify('+15 minutes'));
+                    $this->addFlash('error', 'Compte verrouillé après 3 tentatives échouées. Réessayez dans 15 minutes.');
+                    $logger->error("Erreur d'authentification : Compte verrouillé après 3 échecs.");
+                } else {
+                    $this->addFlash('error', 'Mot de passe incorrect.');
+                    $logger->error("Erreur d'authentification : Mot de passe incorrect.");
+                }
+
+                $manager->flush();
+
+                return $this->render('connexion/index.html.twig', [
+                    'last_username' => $msisdn,
+                    'admin' => in_array($adminRole, $roles, true),
+                ]);
             }
         }
 
@@ -143,7 +143,8 @@ class ConnexionController extends AbstractController
     }
 
 
-    #[Route('abonne/connexion',name : 'connexion.abonne')]
+
+    #[Route('abonne/connexion','connexion.abonne')]
     public function connexion(SettingsRepository $settingsRepository,RequestStack $requestStack,AuthenticationUtils $authenticationUtils)
     {
         $session = $requestStack->getSession();
